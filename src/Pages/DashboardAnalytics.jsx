@@ -47,8 +47,8 @@ function DashboardAnalytics() {
 
   return (
     <>
-      <div className="p-6 bg-gray-50 h-full w-9/10 rounded">
-        <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg">
+      <div className="p-6 h-full w-9/10 rounded">
+        <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-blue-100 text-left text-gray-800">
               <th className="py-3 px-4">Timestamp</th>

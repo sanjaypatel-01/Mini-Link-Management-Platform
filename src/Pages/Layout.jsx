@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from '../assets/logo.png';
 import IconDashboard from '../assets/IconDashboard.png';
 import IconLinks from '../assets/IconLinks.png';
@@ -11,10 +11,36 @@ import Dashboard from "./Dashboard";
 import Routing from "./Routing";
 
 function Layout( {children} ) {
+
+    // To show date and greeting accordingly
+    const [greeting, setGreeting] = useState("");
+    const [currentDate, setCurrentDate] = useState("");
+
+    useEffect(() => {
+        // Get the current time
+        const now = new Date();
+        const hours = now.getHours();
+
+        // Determine the greeting based on the time
+        if (hours < 12) {
+            setGreeting("Good morning");
+        } else if (hours < 18) {
+            setGreeting("Good afternoon");
+        } else {
+            setGreeting("Good evening");
+        }
+
+        // Format the current date
+        const options = { weekday: "short", month: "short", day: "numeric" };
+        setCurrentDate(now.toLocaleDateString("en-US", options));
+    }, []);
+    // Till here, To show date and greeting accordingly
+
+
     return (
-        <div className="w-full h-screen bg-blue-50 flex">
+        <div className="w-full h-screen flex">
             
-            <div className="w-1/5 flex items-start flex-col p-8">
+            <div className="w-1/5 flex items-start flex-col p-8 border-r border-gray-200">
               <div>
                 <img className="w-12" src={logo} alt="" />
               </div>
@@ -53,11 +79,11 @@ function Layout( {children} ) {
             </div>
 
             <div className="w-4/5 flex flex-col">
-                <div className="bg-blue-200 h-1/10 flex items-center justify-between p-8">
+                <div className="h-1/10 flex items-center justify-between p-8 border-b border-gray-200">
                     <div>
                         <div>
-                            <h3 className="font-semibold flex items-center"><span className="mr-2"><img src={IconGM} alt="" /></span>Good morning, Sanjay</h3>
-                            <span className="text-gray-600 text-sm ml-6">Tues, Jan 25</span>
+                            <h3 className="font-semibold flex items-center"><span className="mr-2"><img src={IconGM} alt="" /></span>{greeting}, Sanjay</h3>
+                            <span className="text-gray-600 text-sm ml-6">{currentDate}</span>
                         </div>
                     </div>
                     <div className="flex">
@@ -72,7 +98,7 @@ function Layout( {children} ) {
                     </div>
                 </div>
                 
-                <div className="bg-blue-100 h-9/10 p-12 flex flex-col">
+                <div className="h-9/10 p-12 flex flex-col">
                     <Outlet />
                 </div>
                 

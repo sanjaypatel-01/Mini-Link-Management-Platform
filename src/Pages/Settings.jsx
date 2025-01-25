@@ -3,7 +3,7 @@ import React from "react";
 function Settings() {
   return (
     <>
-      <div className="bg-blue-100 h-9/10 p-12 flex justify-center">
+      <div className="bg-white h-9/10 p-12 flex justify-center rounded">
         <div className="h-full w-1/3 flex flex-col gap-4 items-start">
           <div className="flex w-full items-center justify-between mt-16">
             <span>Name</span>
