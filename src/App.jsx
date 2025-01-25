@@ -4,14 +4,20 @@ import LogIn from "./Pages/LogIn"
 import Settings from "./Pages/Settings"
 import DashboardAnalytics from "./Pages/DashboardAnalytics"
 import DashboardLinks from "./Pages/DashboardLinks"
+import React from "react"
+import Routing from "./Pages/Routing"
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { BrowserRouter } from "react-router-dom"
+
 
 function App() {
   
   return (
-    <div>
-      <DashboardLinks/>
-    </div>
+    <BrowserRouter>
+
+        <Routing/>
+
+    </BrowserRouter>
   )
 }
 
