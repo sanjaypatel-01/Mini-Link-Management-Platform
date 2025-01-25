@@ -83,12 +83,11 @@ function SignUp() {
   };
 
   // signup login toggle
-      const [isSignUpActive, setIsSignUpActive] = useState(true);
-  
-      const redirectToSignUp = () => {
-        setIsSignUpActive(true);
-      };
-    
+  const [isSignUpActive, setIsSignUpActive] = useState(true);
+
+  const redirectToSignUp = () => {
+    setIsSignUpActive(true);
+  };
 
   return (
     <div className="w-full h-screen flex">
@@ -110,15 +109,14 @@ function SignUp() {
 
           <button
             className={`cursor-pointer px-2 py-1 rounded ml-6 ${
-                !isSignUpActive
-                  ? "bg-blue-700 text-white font-bold"
-                  : "bg-transparent text-blue-700"
-              }`}
+              !isSignUpActive
+                ? "bg-blue-700 text-white font-bold"
+                : "bg-transparent text-blue-700"
+            }`}
             onClick={redirectToLogin}
           >
             Login
           </button>
-
         </div>
         <div className="flex flex-col h-[90%] items-center">
           <h3 className="m-8 w-3/5 text-lg font-semibold">Join us Today!</h3>

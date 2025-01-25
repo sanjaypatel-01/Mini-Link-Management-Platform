@@ -5,6 +5,7 @@ import IconSearch from "../assets/IconSearch.png";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Routing from "./Routing";
+import NewLinkModal from "../Components/NewLinkModal";
 
 function Layout({ children }) {
   // To determine the active route
@@ -33,6 +34,19 @@ function Layout({ children }) {
     setCurrentDate(now.toLocaleDateString("en-US", options));
   }, []);
   // Till here, To show date and greeting accordingly
+
+
+    // Modal state
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    // Open the modal
+    const openModal = () => {
+    setIsModalOpen(true);
+    };
+    // Close the modal
+    const closeModal = () => {
+    setIsModalOpen(false);
+    };
+
 
   return (
     <div className="w-full h-screen flex">
@@ -112,7 +126,9 @@ function Layout({ children }) {
             </div>
           </div>
           <div className="flex">
-            <button className="bg-blue-700 text-white rounded px-4 py-1 h-10 ml-16 cursor-pointer">
+            <button className="bg-blue-700 text-white rounded px-4 py-1 h-10 ml-16 cursor-pointer"
+            onClick={openModal}
+            >
               + Create new
             </button>
             <div className="flex border border-gray-400 rounded p-2 ml-10 mr-16 cursor-pointer items-center space-x-2 justify-center">
@@ -133,7 +149,13 @@ function Layout({ children }) {
 
         {/* Yahn mujhe place karna hai jab bhi mai kishi link pe click karu, toh ushka section yahn aa jaye */}
       </div>
+
+          {/* Modal */}
+<NewLinkModal isOpen={isModalOpen} closeModal={closeModal} />
+
     </div>
+
+
   );
 }
 
