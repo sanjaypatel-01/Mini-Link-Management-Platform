@@ -118,7 +118,7 @@ function DashboardAnalytics() {
                 
                 <div className="bg-sky-100 h-9/10 pt-10 pb-6 flex justify-center">
 
-                    <div className="p-6 bg-gray-50 h-full rounded">
+                    <div className="p-6 bg-gray-50 h-full w-9/10 rounded">
                         <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg">
                         <thead>
                             <tr className="bg-blue-100 text-left text-gray-800">
