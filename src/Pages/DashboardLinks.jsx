@@ -28,7 +28,7 @@ function DashboardLinks() {
     const startIndex = (currentPage - 1) * rowsPerPage;
     const currentRows = data.slice(startIndex, startIndex + rowsPerPage);
 
-    // Pagination Handlers
+    // Pagination Handlerss
     const goToPreviousPage = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
