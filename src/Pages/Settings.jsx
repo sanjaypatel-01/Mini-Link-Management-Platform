@@ -3,12 +3,12 @@ import React from "react";
 function Settings() {
   return (
     <>
-      <div className="bg-white h-9/10 p-12 flex justify-center rounded">
+      <div className="h-9/10 p-12 flex justify-center rounded">
         <div className="h-full w-1/3 flex flex-col gap-4 items-start">
           <div className="flex w-full items-center justify-between mt-16">
             <span>Name</span>
             <input
-              className="border border-gray-400 p-1 rounded w-3/5"
+              className="border border-gray-400 p-1 px-2 rounded w-4/6"
               type="text"
               placeholder="Sanjay Patel"
             />
@@ -16,7 +16,7 @@ function Settings() {
           <div className="flex w-full items-center justify-between">
             <span>Email Id</span>
             <input
-              className="border border-gray-400 p-1 rounded w-3/5"
+              className="border border-gray-400 p-1 px-2 rounded w-4/6"
               type="text"
               placeholder="sanjay@gmail.com"
             />
@@ -24,7 +24,7 @@ function Settings() {
           <div className="flex w-full items-center justify-between">
             <span>Mobile no.</span>
             <input
-              className="border border-gray-400 p-1 rounded w-3/5"
+              className="border border-gray-400 p-1 px-2 rounded w-4/6"
               type="text"
               placeholder="9630974774"
             />
