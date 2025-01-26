@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import EditLinkModal from "../Components/EditLinkModal";
 
 const data = [
   {
@@ -47,6 +48,17 @@ function Links() {
   const goToNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
+
+    // Modal state
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    // Open the modal
+    const openModal = () => {
+      setIsModalOpen(true);
+    };
+    // Close the modal
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
 
   return (
     <>
@@ -101,11 +113,13 @@ function Links() {
                 >
                   {row.status}
                 </td>
-                <td className="py-3 px-4 flex gap-6">
-                  <button className="text-black hover:text-blue-700">
+                <td 
+                className="py-3 px-4 flex gap-6"
+                >
+                  <button onClick={openModal} className="text-black cursor-pointer hover:text-blue-700">
                     <i class="fa-solid fa-pen" />
                   </button>
-                  <button className="text-black hover:text-red-700">
+                  <button className="text-black cursor-pointer hover:text-red-700">
                     <i class="fa-regular fa-trash-can" />
                   </button>
                 </td>
@@ -140,6 +154,8 @@ function Links() {
           </button>
         </div>
       </div>
+      {/* Modal */}
+      <EditLinkModal isOpen={isModalOpen} closeModal={closeModal} />
     </>
   );
 }

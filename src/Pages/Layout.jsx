@@ -35,18 +35,16 @@ function Layout({ children }) {
   }, []);
   // Till here, To show date and greeting accordingly
 
-
-    // Modal state
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    // Open the modal
-    const openModal = () => {
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Open the modal
+  const openModal = () => {
     setIsModalOpen(true);
-    };
-    // Close the modal
-    const closeModal = () => {
+  };
+  // Close the modal
+  const closeModal = () => {
     setIsModalOpen(false);
-    };
-
+  };
 
   return (
     <div className="w-full h-screen flex">
@@ -126,8 +124,9 @@ function Layout({ children }) {
             </div>
           </div>
           <div className="flex">
-            <button className="bg-blue-700 text-white rounded px-4 py-1 h-10 ml-16 cursor-pointer"
-            onClick={openModal}
+            <button
+              className="bg-blue-700 text-white rounded px-4 py-1 h-10 ml-16 cursor-pointer"
+              onClick={openModal}
             >
               + Create new
             </button>
@@ -135,7 +134,11 @@ function Layout({ children }) {
               <span>
                 <img src={IconSearch} alt="" />
               </span>
-              <input className="outline-none" type="text" placeholder="Search by remarks" />
+              <input
+                className="outline-none"
+                type="text"
+                placeholder="Search by remarks"
+              />
             </div>
             <div className="w-10 h-10 rounded-full bg-yellow-400 font-semibold text-lg text-gray-700 flex items-center justify-center p-1 ml-8 cursor-pointer">
               SP
@@ -150,12 +153,9 @@ function Layout({ children }) {
         {/* Yahn mujhe place karna hai jab bhi mai kishi link pe click karu, toh ushka section yahn aa jaye */}
       </div>
 
-          {/* Modal */}
-<NewLinkModal isOpen={isModalOpen} closeModal={closeModal} />
-
+      {/* Modal */}
+      <NewLinkModal isOpen={isModalOpen} closeModal={closeModal} />
     </div>
-
-
   );
 }
 

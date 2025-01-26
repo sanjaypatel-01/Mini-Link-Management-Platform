@@ -30,12 +30,13 @@ function NewLinkModal({ isOpen, closeModal }) {
     const formattedDate = currentDate.toISOString().slice(0, 16); // Format as YYYY-MM-DDTHH:mm
     setExpirationDate(formattedDate);
   };
+  
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 backdrop-blur-md z-50">
       <div className="bg-white rounded-md w-2/7 h-[70%] relative overflow-hidden shadow-lg">
         <div className="text-lg font-semibold bg-slate-700 text-white p-4 flex justify-between">
-          <h2>New Link</h2>
+          <h2>Edit Link</h2>
           <span className="text-2xl cursor-pointer" onClick={closeModal}>
             <i className="fa-solid fa-xmark"></i>
           </span>
@@ -99,7 +100,7 @@ function NewLinkModal({ isOpen, closeModal }) {
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-600 cursor-pointer"
             onClick={handleCreate}
           >
-            Create new
+            Save
           </button>
         </div>
       </div>
