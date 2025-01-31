@@ -260,6 +260,30 @@ app.put("/api/user/update", authenticateToken, async (req, res) => {
   }
 });
 
+// Edit 
+app.put("/api/links/:id", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { originalLink, remarks } = req.body;
+
+    // ✅ Find the link and update it
+    const updatedLink = await Url.findByIdAndUpdate(
+      id,
+      { originalLink, remarks },
+      { new: true }
+    );
+
+    if (!updatedLink) {
+      return res.status(404).json({ success: false, message: "Link not found" });
+    }
+
+    res.json({ success: true, message: "Link updated successfully!", link: updatedLink });
+  } catch (error) {
+    console.error("Error updating link:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
 app.get("/:shortId", async (req, res) => {
   const { shortId } = req.params;
   // const ip = req.ip;

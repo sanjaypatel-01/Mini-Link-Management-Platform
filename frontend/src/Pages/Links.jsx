@@ -20,7 +20,20 @@ function Links() {
 
   const rowsPerPage = 10;
 
+  const [selectedLink, setSelectedLink] = useState(null); // Store selected link data
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Track Edit Modal state
 
+  // Function to open Edit Modal with link details
+  const openEditModal = (link) => {
+    setSelectedLink(link); // Store link details before opening modal
+    setIsEditModalOpen(true);
+  };
+
+  // Function to close Edit Modal
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedLink(null); // Clear selected link after closing modal
+  };
 
   const fetchLinks = async () => {
     setLoading(true);
@@ -217,10 +230,13 @@ function Links() {
                   </td>
 
                 <td className="py-3 px-4 flex gap-6">
-                  <button
+                  {/* <button
                     onClick={openModal}
                     className="text-black cursor-pointer hover:text-blue-700"
                   >
+                    <i className="fa-solid fa-pen" />
+                  </button> */}
+                  <button onClick={() => openEditModal(row)} className="text-black cursor-pointer hover:text-blue-700">
                     <i className="fa-solid fa-pen" />
                   </button>
                   <button className="text-black cursor-pointer hover:text-red-700"
@@ -290,7 +306,7 @@ function Links() {
       )}
 
       <EditLinkModal isOpen={isModalOpen} closeModal={closeModal} />
-      <NewLinkModal isOpen={isModalOpen} closeModal={closeModal} refreshData={fetchLinks} />
+      <NewLinkModal isOpen={isModalOpen} closeModal={closeModal} link={selectedLink} refreshData={fetchLinks} />
 
 
     </>
