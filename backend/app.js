@@ -236,6 +236,29 @@ app.delete("/api/user/delete", authenticateToken, async (req, res) => {
   }
 });
 
+// Update account or user details
+app.put("/api/user/update", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name, email, mobile } = req.body;
+
+    // Find the user and update details
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { name, email, mobile },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, message: "Profile updated successfully!", user: updatedUser });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 
 app.get("/:shortId", async (req, res) => {
   const { shortId } = req.params;

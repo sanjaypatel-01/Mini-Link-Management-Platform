@@ -44,9 +44,8 @@ function Settings() {
   const saveChanges = async () => {
     const authToken = localStorage.getItem("authToken");
     try {
-      const response = await axios.put(
-        "http://localhost:5000/api/user/update",
-        formData,
+      const response = await axios.put("http://localhost:5000/api/user/update",
+        { name: formData.name, email: formData.email, mobile: formData.mobile }, // Send only required fields
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
