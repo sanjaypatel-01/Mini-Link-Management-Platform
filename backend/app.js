@@ -214,13 +214,38 @@ app.get('/api/user', authenticateToken, async (req, res) => {
 
 // ...existing code...
 
+// delete account or user
+app.delete("/api/user/delete", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id; // Get logged-in user's ID
 
+     // Step 1: Delete all short links created by this user
+     await Url.deleteMany({ user: userId });
 
+      // Step 2: Delete the user account
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, message: "User and associated short links deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user and links:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 
 
 app.get("/:shortId", async (req, res) => {
   const { shortId } = req.params;
-  const ip = req.ip;
+  // const ip = req.ip;
+
+  // Capture real IP address
+  const ip = req.headers["x-forwarded-for"] || 
+           req.connection.remoteAddress || 
+           req.socket.remoteAddress || 
+           req.ip;
 
   try {
     console.log(`🔍 Searching for short link: ${shortId}`);
@@ -229,27 +254,27 @@ app.get("/:shortId", async (req, res) => {
     const linkData = await Url.findOne({ shortLink: shortId });
 
     if (!linkData) {
-      console.log("❌ URL not found in database");
+      console.log("URL not found in database");
       return res.status(404).json({ message: "URL not found" });
     }
 
-    console.log(`✅ URL found: Redirecting to ${linkData.originalLink}`);
+    console.log(`URL found: Redirecting to ${linkData.originalLink}`);
 
-    // ✅ Ensure `req.useragent` exists
+    // Ensure `req.useragent` exists
     const device = req.useragent?.isMobile
       ? "Mobile"
       : req.useragent?.isTablet
       ? "Tablet"
       : "Desktop";
 
-    console.log(`📌 Click detected from IP: ${ip}, Device: ${device}`);
+    console.log(` Click detected from IP: ${ip}, Device: ${device}`);
 
-    // ✅ Ensure `clicks` is an array before pushing
+    // Ensure `clicks` is an array before pushing
     if (!Array.isArray(linkData.clicks)) {
       linkData.clicks = [];
     }
 
-    // ✅ Ensure the pushed data is an object (not a number)
+    // Ensure the pushed data is an object (not a number)
     // const clickEntry = {
     //   timestamp: new Date(),
     //   device,
