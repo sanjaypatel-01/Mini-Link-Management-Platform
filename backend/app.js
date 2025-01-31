@@ -250,10 +250,17 @@ app.get("/:shortId", async (req, res) => {
     }
 
     // ✅ Ensure the pushed data is an object (not a number)
+    // const clickEntry = {
+    //   timestamp: new Date(),
+    //   device,
+    //   ip
+    // };
+
+    // Update Click Tracking to Ensure Data is Saved Correctly
     const clickEntry = {
       timestamp: new Date(),
-      device,
-      ip
+      device: device || "Unknown",
+      ip: ip || "Unknown"
     };
 
     // ✅ Validate before pushing
