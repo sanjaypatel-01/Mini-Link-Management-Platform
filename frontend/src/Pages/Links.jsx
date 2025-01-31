@@ -38,7 +38,7 @@ function Links() {
   const fetchLinks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://mini-link-management-platform-2pzz4ft6n.vercel.app/api/links", {
+      const response = await axios.get("http://localhost:5000/api/links", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
