@@ -275,6 +275,8 @@ app.get("/:shortId", async (req, res) => {
 });
   
 
+app.use("/api", analyticsRoutes); // ✅ Mount analytics routes
+
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });

@@ -79,16 +79,15 @@ function Analytics() {
                     className={`text-gray-700 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
                   >
                     <td className="py-3 px-4">
-                    {row.clicks?.length ? (
-                      row.clicks.map((click, i) => (
-                        <div key={i}>{new Date(click.timestamp).toLocaleString()}</div>
-                      ))
-                    ) : (
-                      "No Clicks"
-                    )}
-                  </td>
-
-                    <td className="py-3 px-4">{row.originalLink}</td>
+                      {row.timestamp
+                        ? new Date(row.timestamp).toLocaleString()
+                        : row.clicks && row.clicks.length > 0
+                        ? row.clicks.map((click, i) => (
+                            <div key={i}>{new Date(click.timestamp).toLocaleString()}</div>
+                          ))
+                        : "No Clicks"}
+                    </td>
+                    <td className="text-blue-500 truncate max-w-[150px] block overflow-hidden whitespace-nowrap">{row.originalLink}</td>
                     <td className="py-3 px-4 text-blue-500">
                       <a href={`http://localhost:5000/${row.shortLink}`} target="_blank" rel="noopener noreferrer">
                         {`http://localhost:5000/${row.shortLink}`}
@@ -96,19 +95,35 @@ function Analytics() {
                     </td>
 
                     <td className="py-3 px-4">
-                      {row.clicks.length > 0 ? (
+                        {row.ipAddress
+                          ? row.ipAddress
+                          : row.clicks && row.clicks.length > 0
+                          ? row.clicks.map((click, i) => <div key={i}>{click.ip}</div>)
+                          : "No IP"}
+                      </td>
+
+                      <td className="py-3 px-4">
+                        {row.userDevice
+                          ? row.userDevice
+                          : row.clicks && row.clicks.length > 0
+                          ? row.clicks.map((click, i) => <div key={i}>{click.device}</div>)
+                          : "No Data"}
+                      </td>
+
+                    {/* <td className="py-3 px-4">
+                      {Array.isArray(row.clicks) && row.clicks.length  > 0 ? (
                         row.clicks.map((click, i) => <div key={i}>{click.ip}</div>)
                       ) : (
                         "No Clicks"
                       )}
                     </td>
                     <td className="py-3 px-4">
-                      {row.clicks.length > 0 ? (
+                      {Array.isArray(row.clicks) && row.clicks.length  > 0 ? (
                         row.clicks.map((click, i) => <div key={i}>{click.device}</div>)
                       ) : (
                         "No Data"
                       )}
-                    </td>
+                    </td> */}
                   </tr>
                 ))
               ) : (
