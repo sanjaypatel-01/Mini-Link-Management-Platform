@@ -33,7 +33,7 @@ function Layout({ children }) {
     if (hours < 12) {
       setGreeting("Good morning");
     } else if (hours < 18) {
-      setGreeting("Good afternoon");
+      setGreeting("Good afternoonn");
     } else {
       setGreeting("Good evening");
     }
