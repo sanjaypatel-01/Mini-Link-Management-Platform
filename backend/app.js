@@ -17,7 +17,7 @@ dotenv.config();  // Load environment variables from .env
 const app = express();
 
 // Specify allowed origin (frontend running at http://localhost:5173)
-app.use(cors({ origin: ["https://mini-link-management-platform-ms91.vercel.app"] }));
+app.use(cors({ origin: ["https://mini-link-management-platform-ms91.vercel.app/"] }));
 
 app.use(express.json());
 
