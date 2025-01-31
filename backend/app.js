@@ -284,6 +284,11 @@ app.put("/api/links/:id", authenticateToken, async (req, res) => {
   }
 });
 
+app.get("/welcomeuser", async (req, res) => {
+  res.json({ message: "Welcome User!" });
+});
+
+
 app.get("/:shortId", async (req, res) => {
   const { shortId } = req.params;
   // const ip = req.ip;
