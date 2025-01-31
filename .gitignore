@@ -1,0 +1,26 @@
+# Node.js dependencies
+node_modules/
+
+# Vite build output (for frontend)
+frontend/dist/
+
+# Backend build output (if any)
+backend/dist/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# .env files (if any) – protect sensitive data
+.env
+.env.local
+
+# NPM and Yarn lock files (optional but can be ignored if you want)
+package-lock.json
+yarn.lock
+
+# Vercel-related files (optional, can be ignored if unnecessary)
+.vercel
