@@ -25,13 +25,10 @@ function LogIn() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
-  
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://mini-link-management-platform-2pzz4ft6n.vercel.app/api/login", formData);
+      const response = await axios.post("http://localhost:5000/api/login", formData);
       localStorage.setItem("authToken", response.data.token);
       navigate("/dashboard");
     } catch (error) {
