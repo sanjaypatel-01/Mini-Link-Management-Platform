@@ -69,11 +69,16 @@ function SignUp() {
     }
   
     if (Object.keys(validationErrors).length === 0) {
+
+      console.log("before signup");
+
       try {
         const response = await axios.post(
-          `${backendUrl}/signup`,
+          `${backendUrl}/api/signup`,
           formData
         );
+
+        console.log(response.data); // Check the response data
   
         if (response.data.token) {
           localStorage.setItem("authToken", response.data.token);
