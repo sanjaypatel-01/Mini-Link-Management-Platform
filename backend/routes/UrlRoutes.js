@@ -26,7 +26,7 @@ router.post('/api/shorten', async (req, res) => {
 
     await newUrl.save(); // Save the URL to MongoDB
 
-    res.json({ shortUrl: `http://localhost:5000/${shortId}`, shortId });
+    res.json({ shortUrl: `${process.env.API_BASE_URL}/${shortId}`, shortId });
   } catch (error) {
     res.status(500).json({ error: 'Failed to shorten URL' });
   }
@@ -47,7 +47,7 @@ router.get('/api/user/:userId/links', async (req, res) => {
     const result = links.map(link => ({
       shortId: link.shortId,
       originalUrl: link.originalUrl,
-      shortUrl: `http://localhost:5000/${link.shortId}`,
+      shortUrl: `${process.env.API_BASE_URL}/${link.shortId}`,
       remarks: link.remarks,
       clicks: link.clicks.length,
     }));

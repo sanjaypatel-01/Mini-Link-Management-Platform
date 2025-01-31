@@ -54,7 +54,7 @@ export const getUserLinks = async (req, res) => {
   const response = links.map(link => ({
     shortId: link.shortId,
     originalUrl: link.originalUrl,
-    shortUrl: `http://localhost:5000/${link.shortId}`,
+    shortUrl: `${process.env.API_BASE_URL}/${link.shortId}`,
     remarks: link.remarks,
     clicks: link.clicks.length,
   }));

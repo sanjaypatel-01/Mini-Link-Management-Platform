@@ -3,6 +3,8 @@ import bgImage from "../assets/bg_image.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Don't forget to import axios
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 function LogIn() {
   const navigate = useNavigate();
 
@@ -10,6 +12,8 @@ function LogIn() {
   const redirectToSignUp = () => {
     navigate("/signup");
   };
+
+  
 
   // Toggle between signup and login
   const [isSignUpActive, setIsSignUpActive] = useState(false);
@@ -28,7 +32,9 @@ function LogIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/login", formData);
+      console.log("before env");
+      console.log("check env" , backendUrl)
+      const response = await axios.post(`${backendUrl}/api/login`, formData);
       localStorage.setItem("authToken", response.data.token);
       navigate("/dashboard");
     } catch (error) {

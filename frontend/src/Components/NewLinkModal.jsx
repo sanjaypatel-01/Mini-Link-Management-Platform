@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function NewLinkModal({ isOpen, closeModal, refreshData }) {
   const [destinationUrl, setDestinationUrl] = useState("");
@@ -34,7 +35,7 @@ function NewLinkModal({ isOpen, closeModal, refreshData }) {
         return;
       }
   
-      const response = await fetch("http://localhost:5000/create", {
+      const response = await fetch(`${backendUrl}/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

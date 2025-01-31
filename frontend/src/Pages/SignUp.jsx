@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios for making HTTP requests
 import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
 import "react-toastify/dist/ReactToastify.css"; // Import toast styles
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function SignUp() {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ function SignUp() {
     if (Object.keys(validationErrors).length === 0) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/signup",
+          `${backendUrl}/signup`,
           formData
         );
   

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Settings() {
   // State to hold the user's details
@@ -19,7 +20,7 @@ function Settings() {
     if (authToken) {
       // Assuming user data is fetched from an endpoint
       axios
-        .get("http://localhost:5000/api/user", {
+        .get(`${backendUrl}/api/user`, {
           headers: { Authorization: `Bearer ${authToken}` },
         })
         .then((response) => {
@@ -44,7 +45,7 @@ function Settings() {
   const saveChanges = async () => {
     const authToken = localStorage.getItem("authToken");
     try {
-      const response = await axios.put("http://localhost:5000/api/user/update",
+      const response = await axios.put(`${backendUrl}/api/user/update`,
         { name: formData.name, email: formData.email, mobile: formData.mobile }, // Send only required fields
         {
           headers: { Authorization: `Bearer ${authToken}` },
@@ -72,7 +73,7 @@ function Settings() {
   const confirmDeleteAccount = async () => {
       const authToken = localStorage.getItem("authToken");
       try {
-        const response = await axios.delete("http://localhost:5000/api/user/delete", {
+        const response = await axios.delete(`${backendUrl}/api/user/delete`, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         if (response.data.success) {

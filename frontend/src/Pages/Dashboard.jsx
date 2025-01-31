@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Dashboard() {
 
@@ -12,7 +13,8 @@ function Dashboard() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/analytics", {
+        
+        const response = await axios.get(`${backendUrl}/api/analytics` , {
           headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
         });
 

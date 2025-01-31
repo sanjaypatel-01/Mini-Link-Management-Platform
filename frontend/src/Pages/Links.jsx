@@ -3,6 +3,7 @@ import axios from "axios";
 import EditLinkModal from "../Components/EditLinkModal";
 import NewLinkModal from "../Components/NewLinkModal";
 import { useOutletContext } from "react-router-dom"; //Import this to get searchTerm from Layout.js
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Links() {
   const [linksData, setLinksData] = useState([]);
@@ -38,7 +39,7 @@ function Links() {
   const fetchLinks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5000/api/links", {
+      const response = await axios.get(`${backendUrl}/api/links` , {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
@@ -105,7 +106,7 @@ function Links() {
       }
   
       // Use _id in the API request
-      await axios.delete(`http://localhost:5000/api/links/${linkToRemove._id}`, {
+      await axios.delete( `${backendUrl}/api/links/${linkToRemove._id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },

@@ -8,6 +8,7 @@ import NewLinkModal from "../Components/NewLinkModal";
 import cuvettelogo from "../assets/cuvettelogo.png";
 import Dashboard from "./Dashboard";
 import Routing from "./Routing";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Layout({ children }) {
   
@@ -48,7 +49,7 @@ function Layout({ children }) {
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        const response = await axios.get("http://localhost:5000/api/user", {
+        const response = await axios.get(`${backendUrl}/api/user` , {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -72,11 +73,13 @@ function Layout({ children }) {
 
   const fetchLinks = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/links", {
+      const response = await axios.get(`${backendUrl}/api/links` , {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
+
+      console.log("API Response:", response); // Debugging
   
       const data = response.data;
     } catch (error) {

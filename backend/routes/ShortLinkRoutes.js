@@ -8,6 +8,9 @@ const router = express.Router();
 
 // Create new short link
 router.post('/create', async (req, res) => {
+
+  console.log("Create short link request received", res.body);
+
   const { destinationUrl, remarks, expirationDate } = req.body;
   console.log(req.body);  // Log the request body for debugging
   

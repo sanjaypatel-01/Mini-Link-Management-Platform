@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // For making API requests
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 function Analytics() {
   // State for storing analytics data
   const [data, setData] = useState([]);
@@ -16,7 +18,7 @@ function Analytics() {
     const fetchAnalyticsData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/analytics", {
+        const response = await axios.get(`${backendUrl}/api/analytics`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
         });
         console.log("API Response:", response.data); // Debugging
@@ -89,8 +91,9 @@ function Analytics() {
                     </td>
                     <td className="text-blue-500 truncate max-w-[150px] block overflow-hidden whitespace-nowrap">{row.originalLink}</td>
                     <td className="py-3 px-4 text-blue-500">
-                      <a href={`http://localhost:5000/${row.shortLink}`} target="_blank" rel="noopener noreferrer">
-                        {`http://localhost:5000/${row.shortLink}`}
+          
+                      <a href={`${backendUrl}/${row.shortLink}`} target="_blank" rel="noopener noreferrer">
+                        {`${backendUrl}/${row.shortLink}`}
                       </a>
                     </td>
 
