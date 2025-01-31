@@ -33,7 +33,7 @@ function NewLinkModal({ isOpen, closeModal }) {
   
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 backdrop-blur-md z-50">
+    <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 backdrop-brightness-50 z-50">
       <div className="bg-white rounded-md w-2/7 h-[70%] relative overflow-hidden shadow-lg">
         <div className="text-lg font-semibold bg-slate-700 text-white p-4 flex justify-between">
           <h2>Edit Link</h2>
@@ -72,12 +72,26 @@ function NewLinkModal({ isOpen, closeModal }) {
         <div className="space-y-2 flex flex-col px-6 py-4">
           <div className="flex justify-between">
             <label className="block text-sm font-medium mr-2">Link Expiration</label>
-            <input
+            {/* <input
               type="checkbox"
               checked={expirationEnabled}
               onChange={(e) => setExpirationEnabled(e.target.checked)}
               className="mr-2"
-            />
+            /> */}
+            {/* Toggle Switch */}
+            <div
+                  className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ${
+                    expirationEnabled ? "bg-blue-500" : "bg-gray-300"
+                  }`}
+                  onClick={() => setExpirationEnabled(!expirationEnabled)}
+                >
+                  {/* Toggle Handle */}
+                  <div
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${
+                      expirationEnabled ? "translate-x-5" : "translate-x-0"
+                    }`}
+                  ></div>
+            </div>
           </div>
           {expirationEnabled && (
             <input

@@ -1,20 +1,40 @@
 import React, { useState } from "react";
 import bgImage from "../assets/bg_image.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Don't forget to import axios
 
 function LogIn() {
   const navigate = useNavigate();
 
-  // Redirect to login page
+  // Redirect to signup page
   const redirectToSignUp = () => {
     navigate("/signup");
   };
 
-  // signup login toggle
+  // Toggle between signup and login
   const [isSignUpActive, setIsSignUpActive] = useState(false);
 
   const redirectToLogin = () => {
     setIsSignUpActive(false);
+  };
+
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:5000/api/login", formData);
+      localStorage.setItem("authToken", response.data.token);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+      setError("Invalid email or password");
+    }
   };
 
   return (
@@ -41,25 +61,38 @@ function LogIn() {
                 ? "bg-blue-700 text-white font-bold"
                 : "bg-transparent text-blue-700"
             }`}
+            onClick={redirectToLogin}
           >
             Login
           </button>
         </div>
         <div className="flex flex-col h-[90%] items-center">
           <h3 className="m-10 w-3/5 text-lg font-semibold">Login</h3>
-          <input
-            className="w-3/5 border border-gray-500 p-2 rounded  mb-4 mt-4"
-            type="email"
-            placeholder="Email id"
-          />
-          <input
-            className="w-3/5 border border-gray-500 p-2 rounded  mb-4"
-            type="number"
-            placeholder="Password"
-          />
-          <button className="bg-blue-700 text-white w-3/5 rounded py-1 mb-6">
-            Register
-          </button>
+          <form onSubmit={handleSubmit} className="w-3/5">
+            <input
+              className="w-full border border-gray-500 p-2 rounded mb-4"
+              type="email"
+              placeholder="Email id"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <input
+              className="w-full border border-gray-500 p-2 rounded mb-4"
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            {error && <p className="text-red-500">{error}</p>}
+            <button
+              type="submit"
+              className="bg-blue-700 text-white hover:font-semibold cursor-pointer w-full rounded py-1 mb-6"
+            >
+              Login
+            </button>
+          </form>
           <span>
             Don't have an account?{" "}
             <button

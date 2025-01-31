@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import bgImage from "../assets/bg_image.png";
 import { useNavigate } from "react-router-dom";
-import LogIn from "./LogIn";
+import axios from "axios"; // Import axios for making HTTP requests
+import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import toast styles
 
 function SignUp() {
   const navigate = useNavigate();
-
-  // Redirect to llogin page
-  const redirectToLogin = () => {
-    navigate("/login");
-  };
 
   const [formData, setFormData] = useState({
     name: "",
@@ -34,56 +31,94 @@ function SignUp() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     let validationErrors = {};
-
-    // Name validation
+  
+    // Validation logic
     if (!formData.name) {
       validationErrors.name = "Name is required";
     }
-
-    // Email validation
+  
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!formData.email) {
       validationErrors.email = "Email is required";
     } else if (!emailPattern.test(formData.email)) {
       validationErrors.email = "Enter a valid email address";
     }
-
-    // Mobile validation
+  
     const mobilePattern = /^[0-9]{10}$/;
     if (!formData.mobile) {
-      validationErrors.mobile = "Mobile number is  required";
+      validationErrors.mobile = "Mobile number is required";
     } else if (!mobilePattern.test(formData.mobile)) {
-      validationErrors.mobile = "Enter a valid 10-digit mobile nubmer";
+      validationErrors.mobile = "Enter a valid 10-digit mobile number";
     }
-
-    // Password validation
+  
     if (!formData.password) {
       validationErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
       validationErrors.password = "Password must be at least 6 characters long";
     }
-
-    // Confirm password validation
+  
     if (!formData.confirmPassword) {
       validationErrors.confirmPassword = "Confirm Password is required";
     } else if (formData.confirmPassword !== formData.password) {
-      validationErrors.confirmPassword = "Passwords does not match";
+      validationErrors.confirmPassword = "Passwords do not match";
     }
-
-    // If no errors
+  
     if (Object.keys(validationErrors).length === 0) {
-      console.log("Form Submitted:", formData);
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/signup",
+          formData
+        );
+  
+        if (response.data.token) {
+          localStorage.setItem("authToken", response.data.token);
+          navigate("/login");
+        }
+      } catch (error) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message === "Email already exists"
+        ) { console.log("Email already exists error");  // Check if this log appears
+          toast.error(
+            "This email is already registered. Try a different one!",
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            }
+          );
+  
+          // Optionally, you can clear the form or reset the error states
+          setFormData({
+            ...formData,
+            // email: "", // Clear the email field to let user input again
+          });
+        } else {
+          setErrors({
+            ...errors,
+            general: "Registration failed. Please try again.",
+          });
+        }
+      }
     }
-
+  
     setErrors(validationErrors);
   };
 
-  // signup login toggle
   const [isSignUpActive, setIsSignUpActive] = useState(true);
+
+  const redirectToLogin = () => {
+    navigate("/login");
+  };
 
   const redirectToSignUp = () => {
     setIsSignUpActive(true);
@@ -91,6 +126,7 @@ function SignUp() {
 
   return (
     <div className="w-full h-screen flex">
+      <ToastContainer /> {/* Toast container for displaying toasts */}
       <div className="w-1/2">
         <img className="w-full h-full object-cover" src={bgImage} alt="" />
       </div>
@@ -101,7 +137,7 @@ function SignUp() {
               isSignUpActive
                 ? "bg-blue-700 text-white font-bold"
                 : "bg-transparent text-blue-700"
-            } `}
+            }`}
             onClick={redirectToSignUp}
           >
             SignUp
@@ -160,7 +196,6 @@ function SignUp() {
             value={formData.confirmPassword}
             onChange={handleChange}
           />
-          {/* Display errors */}
           {errors.name && (
             <span className="text-red-600 text-sm">{errors.name}</span>
           )}
@@ -178,9 +213,12 @@ function SignUp() {
               {errors.confirmPassword}
             </span>
           )}
-          ;
+          {errors.general && (
+            <span className="text-red-600 text-sm">{errors.general}</span>
+          )}
+
           <button
-            className="bg-blue-700 text-white w-3/5 rounded py-1 mb-6"
+            className="bg-blue-700 text-white w-3/5 hover:font-semibold rounded py-1 cursor-pointer mb-6"
             onClick={handleSubmit}
           >
             Register

@@ -15,8 +15,8 @@ function Routing() {
       <Route path="/login" element={<LogIn />} />
       <Route path="/signup" element={<SignUp />} />
 
-      {/* Default route, redirect to /dashboard */}
-      <Route path="/" element={<Navigate to="/dashboard" />} />
+      {/* Default route, redirect to /signup */}
+      <Route path="/" element={<Navigate to="/signup" />} />
 
       {/* Routes with Layout */}
       <Route element={<Layout />}>
