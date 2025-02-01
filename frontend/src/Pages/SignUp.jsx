@@ -81,6 +81,8 @@ function SignUp() {
 
         console.log(response.data); // Check the response data
   
+        toast.success("Registration successful! Redirecting to login page...");
+
         if (response.data.token) {
           localStorage.setItem("authToken", response.data.token);
           navigate("/login");
