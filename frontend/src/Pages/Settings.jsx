@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css"; 
+import { ToastContainer } from "react-toastify";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Settings() {
@@ -52,10 +55,19 @@ function Settings() {
         }
       );
       if (response.data.success) {
-        alert("Changes saved successfully!");
+        toast.success("Changes saved successfully!");
+
+        // ✅ If email is changed, logout and redirect
+      if (response.data.emailChanged) {
+        setTimeout(() => {
+          localStorage.removeItem("authToken");
+          window.location.href = "/login";
+        }, 2000);
+      }
       }
     } catch (error) {
       setError("Failed to update details. Please try again.");
+      toast.error("Failed to update details. Please try again.");
     }
   };
 
@@ -77,9 +89,13 @@ function Settings() {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         if (response.data.success) {
-          localStorage.removeItem("authToken");
-          alert("Account deleted successfully");
-          window.location.href = "/login";  // Redirect after deletion
+
+          toast.success("Account deleted successfully!");
+
+          setTimeout(() => {
+            localStorage.removeItem("authToken");
+            window.location.href = "/login";
+          }, 2000);
         }
       } catch (error) {
         setError("Failed to delete account. Please try again.");
@@ -175,6 +191,7 @@ function Settings() {
               </div>
             </div>
           )}
+          <ToastContainer /> {/* ✅ Add this to enable toasts */}
     </div>
 
           
