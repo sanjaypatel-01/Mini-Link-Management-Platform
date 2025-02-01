@@ -184,7 +184,8 @@ function Links() {
             </tr>
           </thead>
           <tbody>
-            {currentRows.map((row, index) => (
+          {currentRows.length > 0 ? (
+            currentRows.map((row, index) => (
               <tr
                 key={row._id}
                 className={`text-gray-700 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
@@ -247,7 +248,14 @@ function Links() {
                   </button>
                 </td>
               </tr>
-            ))}
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" className="text-center py-6 text-gray-500">
+                {/* Keep table empty if data fetch fails */}
+              </td>
+            </tr>
+          )}
           </tbody>
         </table>
 
