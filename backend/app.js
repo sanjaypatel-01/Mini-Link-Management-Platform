@@ -15,14 +15,19 @@ dotenv.config();
 
 const app = express();
 
+// ✅ Allow requests from both localhost (for development) and your Vercel frontend (for production)
 const corsOptions = {
-  origin: "https://mini-link-management-platform-ms91.vercel.app/", // Change this to your frontend URL in production
-  credentials: true, // Allow cookies and headers
+  origin: [
+    "http://localhost:5173", // Dev frontend
+    "https://mini-link-management-platform-ms91-fa38b68dl.vercel.app", // Vercel frontend
+  ],
+  credentials: true, // Allow cookies and authorization headers
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(useragent.express());
 
