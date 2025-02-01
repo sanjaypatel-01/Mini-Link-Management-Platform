@@ -35,7 +35,7 @@ function NewLinkModal({ isOpen, closeModal, refreshData }) {
         return;
       }
   
-      const response = await fetch(`${backendUrl}/create`, {
+      const response = await fetch(`${backendUrl}/api/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

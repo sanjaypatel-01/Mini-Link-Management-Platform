@@ -175,8 +175,8 @@ function Links() {
           <thead>
             <tr className="bg-blue-100 text-left text-gray-800">
               <th className="py-3 px-4">Date</th>
-              <th className="py-3 px-4">Original Link</th>
-              <th className="py-3 px-4">Short Link</th>
+              <th className="py-3 px-2">Original Link</th>
+              <th className="py-3 px-2">Short Link</th>
               <th className="py-3 px-4">Remarks</th>
               <th className="py-3 px-4">Clicks</th>
               <th className="py-3 px-4">Status</th>
@@ -189,13 +189,13 @@ function Links() {
                 key={row._id}
                 className={`text-gray-700 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
               >
-                <td className="py-3 px-2">{formatDate(row.createdAt) || "N/A"}</td>
-                <td className="py-3 px-2">
+                <td className="py-3 px-4">{formatDate(row.createdAt) || "N/A"}</td>
+                <td className="py-3 px-2 truncate max-w-[150px] overflow-hidden whitespace-nowrap text-blue-500 ">
                   <a
                     href={row.originalLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 truncate max-w-[150px] block overflow-hidden whitespace-nowrap"
+                    className=""
                     title={row.originalLink}
                   >
                     {row.originalLink || "N/A"}
@@ -206,13 +206,13 @@ function Links() {
                     href={row.shortLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 truncate w-3/5 max-w-[110px] block overflow-hidden whitespace-nowrap"
+                    className="text-blue-500 truncate w-3/5 max-w-[110px] overflow-hidden whitespace-nowrap"
                     title={row.shortLink}
                   >
                     {`yourdomain.com/${row.shortLink}`}
                   </a>
                   <button
-                    onClick={() => navigator.clipboard.writeText(`https://mini-link-management-platform-gk9s.onrender.com/${row.shortLink}`)}
+                    onClick={() => navigator.clipboard.writeText(`http://localhost:5000/api/${row.shortLink}`)}
                     className="ml-2 p-1 w-2/5 hover:text-blue-500 hover:font-bold cursor-pointer text-md">
                     <i className="fa-regular fa-clone"></i>
                   </button>

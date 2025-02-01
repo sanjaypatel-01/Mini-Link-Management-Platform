@@ -1,353 +1,40 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import dotenv from 'dotenv';
-import shortid from 'shortid';  // Import shortid for generating short links
-import { authenticateToken } from './middleware/AuthenticateToken.js';
-import { nanoid } from 'nanoid'; 
-import Url from './models/UrlModel.js';
 import useragent from "express-useragent";
+import { authenticateToken } from './middleware/AuthenticateToken.js';
 import analyticsRoutes from "./routes/analytics.js";
+import authRoutes from "./routes/AuthRoutes.js";
+// import shortLinkRoutes from "./routes/ShortLinkRoutes.js";
+import userRoutes from "./routes/UserRoutes.js";
+import urlRoutes from "./routes/UrlRoutes.js";
+import router from "./routes/analytics.js";
 
-
-dotenv.config();  // Load environment variables from .env
+dotenv.config();
 
 const app = express();
 
-// Specify allowed origin (frontend running at http://localhost:5173)
-// app.use(cors({ origin: ["https://mini-link-management-platform-ms91.vercel.app/"] }));
-
 app.use(cors());
-
 app.use(express.json());
-
-const JWT_SECRET = process.env.JWT_SECRET;  // Using environment variable for JWT secret
-
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)  // Using environment variable for MongoDB URI
-  .then(() => {
-    console.log("MongoDB connected successfully!");
-  })
-  .catch((error) => {
-    console.error("Error connecting to MongoDB:", error);
-  });
-
-// User Schema
-const UserSchema = new mongoose.Schema({
-  name: String,
-  email: { type: String, unique: true },
-  mobile: String,
-  password: String,
-});
-
-const User = mongoose.model("User", UserSchema);
-
-
-
-
-// API Routes
-
-app.get("/", (req, res) => {
-  res.send("Backend is running!");
-});
-
-
-app.post("/api/signup", async (req, res) => {
-  const { name, email, mobile, password } = req.body;
-
-  try {
-    // Check if the email already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(409).json({ message: "Email already exists" });
-    }
-
-    // Hash the password and create a new user if email is unique
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, mobile, password: hashedPassword });
-    await user.save();
-
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
-    res.status(200).json({ token });
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ error: "Invalid data" });
-  }
-});
-
-app.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid password" });
-    }
-
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
-    res.status(200).json({ token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// Route to create a short URL (with authentication)
-// Create new short link
-app.post('/create', authenticateToken, async (req, res) => {
-  const { destinationUrl, remarks, expirationDate } = req.body;
-  const userId = req.user.id;
-  console.log(req.body);  // Log the request body for debugging
-  
-  if (!destinationUrl || !remarks) {
-    return res.status(400).json({ message: 'Destination URL and remarks are required!' });
-  }
-
-  const shortLink = nanoid(8);  // Generate a short link with 8 characters
-
-  // If expirationDate is provided, validate it as a proper date
-  let expiration = null;
-  if (expirationDate) {
-    expiration = new Date(expirationDate);
-    if (isNaN(expiration.getTime())) {
-      return res.status(400).json({ message: 'Invalid expiration date' });
-    }
-  }
-
-  try {
-    const newLink = new Url({
-      originalLink: destinationUrl,
-      shortLink,
-      remarks,
-      expirationDate: expiration,
-      user:userId
-    });
-
-    await newLink.save();
-    res.status(201).json({ shortLink: `https://yourdomain.com/${shortLink}` });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Failed to create short link' });
-  }
-});
-
-// Route to fetch all short URLs (with pagination support)
-app.get("/api/links", authenticateToken, async (req, res) => {
-  try {
-    const { page = 1, limit = 10 } = req.query;  // Default to page 1 with 10 items per page
-    const userId = req.user.id;
-    const links = await Url.find({ user: userId })
-      .sort({ createdAt: -1 }) // Sort by most recent
-      .skip((page - 1) * limit)
-      .limit(parseInt(limit));
-      
-    const totalLinks = await Url.countDocuments({ user: userId });
-    res.status(200).json({
-      data: links,
-      totalLinks,
-      currentPage: parseInt(page),
-      totalPages: Math.ceil(totalLinks / limit),
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error fetching links" });
-  }
-});
-
-app.delete("/api/links/:id", authenticateToken, async (req, res) => {
-  const { id } = req.params; // Get _id from request params
-
-  try {
-    const linkData = await Url.findByIdAndDelete(id); // Delete by _id
-
-    if (linkData) {
-      res.json({ message: "Link deleted successfully." });
-    } else {
-      res.status(404).json({ error: "Link not found." });
-    }
-  } catch (error) {
-    console.error("Error deleting link:", error);
-    res.status(500).json({ error: "Error deleting the link" });
-  }
-});
-
-
-
-// Route to get user data (protected)
-app.get('/api/user', authenticateToken, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);  // Fetch user from database using JWT token
-    res.json(user);  // Send user data back
-  } catch (error) {
-    res.status(500).send('Server Error');
-  }
-});
-
-  // backend/routes/shortLinkRoutes.js
-  // ...existing code...
-
-// ...existing code...
-
-// delete account or user
-app.delete("/api/user/delete", authenticateToken, async (req, res) => {
-  try {
-    const userId = req.user.id; // Get logged-in user's ID
-
-     // Step 1: Delete all short links created by this user
-     await Url.deleteMany({ user: userId });
-
-      // Step 2: Delete the user account
-    const deletedUser = await User.findByIdAndDelete(userId);
-
-    if (!deletedUser) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
-
-    res.json({ success: true, message: "User and associated short links deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting user and links:", error);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-// Update account or user details
-app.put("/api/user/update", authenticateToken, async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const { name, email, mobile } = req.body;
-
-    // Find the user and update details
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { name, email, mobile },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
-
-    res.json({ success: true, message: "Profile updated successfully!", user: updatedUser });
-  } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-// Edit 
-app.put("/api/links/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { originalLink, remarks } = req.body;
-
-    // ✅ Find the link and update it
-    const updatedLink = await Url.findByIdAndUpdate(
-      id,
-      { originalLink, remarks },
-      { new: true }
-    );
-
-    if (!updatedLink) {
-      return res.status(404).json({ success: false, message: "Link not found" });
-    }
-
-    res.json({ success: true, message: "Link updated successfully!", link: updatedLink });
-  } catch (error) {
-    console.error("Error updating link:", error);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-app.get("/welcomeuser", async (req, res) => {
-  res.json({ message: "Welcome User!" });
-});
-
-
-app.get("/:shortId", async (req, res) => {
-  const { shortId } = req.params;
-  // const ip = req.ip;
-
-  // Capture real IP address
-  const ip = req.headers["x-forwarded-for"]
-  ? req.headers["x-forwarded-for"].split(",")[0].trim() // Get first IP
-  : req.connection?.remoteAddress ||
-    req.socket?.remoteAddress ||
-    req.ip;
-
-  try {
-    console.log(`🔍 Searching for short link: ${shortId}`);
-
-    // ✅ Find the URL in the database
-    const linkData = await Url.findOne({ shortLink: shortId });
-
-    if (!linkData) {
-      console.log("URL not found in database");
-      return res.status(404).json({ message: "URL not found" });
-    }
-
-    console.log(`URL found: Redirecting to ${linkData.originalLink}`);
-
-    // Ensure `req.useragent` exists
-    const device = req.useragent?.isMobile
-      ? "Mobile"
-      : req.useragent?.isTablet
-      ? "Tablet"
-      : "Desktop";
-
-    console.log(` Click detected from IP: ${ip}, Device: ${device}`);
-
-    // Ensure `clicks` is an array before pushing
-    if (!Array.isArray(linkData.clicks)) {
-      linkData.clicks = [];
-    }
-
-    // Ensure the pushed data is an object (not a number)
-    // const clickEntry = {
-    //   timestamp: new Date(),
-    //   device,
-    //   ip
-    // };
-
-    // Update Click Tracking to Ensure Data is Saved Correctly
-    const clickEntry = {
-      timestamp: new Date(),
-      device: device || "Unknown",
-      ip: ip || "Unknown"
-    };
-
-    // ✅ Validate before pushing
-    if (typeof clickEntry === "object" && clickEntry !== null) {
-      linkData.clicks.push(clickEntry);
-    } else {
-      console.error("Invalid click entry:", clickEntry);
-    }
-
-    // ✅ Save updated document
-    await linkData.save();
-
-    // ✅ Redirect the user
-    return res.redirect(linkData.originalLink);
-  } catch (error) {
-    console.error("❌ Redirect error:", error);
-    res.status(500).json({ message: "Failed to redirect", error: error.message });
-  }
-});
-  
-
-app.use("/api", analyticsRoutes); // ✅ Mount analytics routes
-
-app.listen(5000, () => {
-  console.log("Server is running on port 5000");
-});
-
-
-
-
-
+app.use(useragent.express());
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected successfully!"))
+  .catch((error) => console.error("Error connecting to MongoDB:", error));
+
+// Root route handler
+app.get("/", (req, res) => res.send("Backend is running!"));
+
+// Route for handling short URLs (should be before API routes)
+// app.use("/", shortLinkRoutes);
+
+// API routes
+app.use("/api", authRoutes);
+app.use("/api", userRoutes);
+app.use("/api", analyticsRoutes);
+app.use("/api", urlRoutes);
+app.use("/api", router);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

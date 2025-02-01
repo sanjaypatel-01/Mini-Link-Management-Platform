@@ -79,8 +79,6 @@ function Layout({ children }) {
         },
       });
 
-      console.log("API Response:", response); // Debugging
-  
       const data = response.data;
     } catch (error) {
       console.error("Error fetching links:", error);

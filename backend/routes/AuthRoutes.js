@@ -1,12 +1,10 @@
-// backend/routes/auth.js
 import express from 'express';
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
-// User Registration
-router.post('/api/signup', async (req, res) => {
+router.post('/signup', async (req, res) => {
   const { name, email, mobile, password } = req.body;
 
   try {
@@ -22,8 +20,7 @@ router.post('/api/signup', async (req, res) => {
   }
 });
 
-// User Login
-router.post('/api/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -33,7 +30,7 @@ router.post('/api/login', async (req, res) => {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
 
-    const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.json({ token });
   } catch (error) {
