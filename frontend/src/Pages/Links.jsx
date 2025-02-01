@@ -170,7 +170,7 @@ function Links() {
 
   return (
     <>
-      <div className="p-4 h-full rounded">
+      <div className="p-4 h-full rounded flex flex-col min-h-full">
         <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-blue-100 text-left text-gray-800">
@@ -251,7 +251,7 @@ function Links() {
           </tbody>
         </table>
 
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-center gap-12 items-center mt-auto py-4">
           <button
             className={`px-4 py-2 rounded cursor-pointer ${
               currentPage === 1 ? "bg-gray-300" : "bg-blue-500 text-white"
@@ -282,7 +282,7 @@ function Links() {
       {isRemoveModalOpen && (
         <div className="fixed inset-0 flex rounded-lg items-center justify-center backdrop-brightness-50 bg-opacity-50 z-50 ">
           <div className="bg-white rounded shadow-lg">
-            <span className="text-lg cursor-pointer flex justify-end p-6" onClick={removeLink}>
+            <span className="text-lg cursor-pointer flex justify-end p-6" onClick={closeRemoveModal}>
               <i className="fa-solid fa-xmark"></i>
             </span>
             <div className="px-14 pb-10">

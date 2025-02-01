@@ -56,7 +56,7 @@ function Analytics() {
   };
 
   return (
-    <div className="p-6 h-full rounded">
+    <div className="p-4 h-full flex flex-col rounded min-h-full">
       {loading ? (
         <div>Loading...</div>
       ) : error ? (
@@ -104,7 +104,7 @@ function Analytics() {
 
       {/* Show pagination only if there is data */}
       {data.length > 0 && (
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-center gap-12 items-center mt-auto py-4">
           <button
             className={`px-4 py-2 rounded cursor-pointer ${currentPage === 1 ? "bg-gray-300" : "bg-blue-500 text-white"}`}
             onClick={goToPreviousPage}
