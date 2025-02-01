@@ -212,7 +212,7 @@ function Links() {
                     {`yourdomain.com/${row.shortLink}`}
                   </a>
                   <button
-                    onClick={() => navigator.clipboard.writeText(`http://localhost:5000/api/${row.shortLink}`)}
+                    onClick={() => navigator.clipboard.writeText(`https://mini-link-management-platform-1-yzp0.onrender.com/${row.shortLink}`)}
                     className="ml-2 p-1 w-2/5 hover:text-blue-500 hover:font-bold cursor-pointer text-md">
                     <i className="fa-regular fa-clone"></i>
                   </button>
@@ -306,7 +306,9 @@ function Links() {
         </div>
       )}
 
-      <EditLinkModal isOpen={isModalOpen} closeModal={closeModal} />
+      {/* <EditLinkModal isOpen={isModalOpen} closeModal={closeModal} /> */}
+      <EditLinkModal isOpen={isEditModalOpen} closeModal={closeEditModal} link={selectedLink} refreshData={fetchLinks}/>
+
       <NewLinkModal isOpen={isModalOpen} closeModal={closeModal} link={selectedLink} refreshData={fetchLinks} />
 
 
