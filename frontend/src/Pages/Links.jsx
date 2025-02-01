@@ -212,7 +212,7 @@ function Links() {
                     {`${backendUrl}/${row.shortLink}`}
                   </a>
                   <button
-                    onClick={() => navigator.clipboard.writeText(`${backendUrl}/${row.shortLink}`)}
+                    onClick={() => navigator.clipboard.writeText(`${backendUrl}/api/${row.shortLink}`)}
                     className="text-gray-500 hover:text-blue-500 hover:font-bold font-semibold cursor-pointer text-lg">
                     <i className="fa-regular fa-clone"></i>
                   </button>
