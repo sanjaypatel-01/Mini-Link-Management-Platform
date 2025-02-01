@@ -275,10 +275,11 @@ app.get("/:shortId", async (req, res) => {
   // const ip = req.ip;
 
   // Capture real IP address
-  const ip = req.headers["x-forwarded-for"] || 
-           req.connection.remoteAddress || 
-           req.socket.remoteAddress || 
-           req.ip;
+  const ip = req.headers["x-forwarded-for"]
+  ? req.headers["x-forwarded-for"].split(",")[0].trim() // Get first IP
+  : req.connection?.remoteAddress ||
+    req.socket?.remoteAddress ||
+    req.ip;
 
   try {
     console.log(`🔍 Searching for short link: ${shortId}`);
