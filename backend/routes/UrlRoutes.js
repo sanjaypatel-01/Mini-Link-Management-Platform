@@ -40,7 +40,7 @@ router.post('/create', authenticateToken, async (req, res) => {
     console.log("New URL object before saving:", newLink);
 
     await newLink.save();
-    res.status(201).json({ shortLink: `https://shorturl.com/${shortLink}` });
+    res.status(201).json({ shortLink: `https://yourdomain.com/${shortLink}` });
   } catch (error) {
     console.error("Database Save Error:", error);
     res.status(500).json({ message: 'Failed to create short link', error: error.message });

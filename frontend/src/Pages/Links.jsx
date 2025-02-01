@@ -201,18 +201,18 @@ function Links() {
                     {row.originalLink || "N/A"}
                   </a>
                 </td>
-                <td className="py-3 px-2 flex">
+                <td className="py-3 px-2 text-blue-500 truncate max-w-[150px] overflow-hidden whitespace-nowrap">
                   <a
                     href={row.shortLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 truncate w-3/5 max-w-[110px] overflow-hidden whitespace-nowrap"
+                    className=""
                     title={row.shortLink}
                   >
-                    {`yourdomain.com/${row.shortLink}`}
+                    {`${backendUrl}/${row.shortLink}`}
                   </a>
                   <button
-                    onClick={() => navigator.clipboard.writeText(`https://mini-link-management-platform-1-yzp0.onrender.com/${row.shortLink}`)}
+                    onClick={() => navigator.clipboard.writeText(`${backendUrl}/${row.shortLink}`)}
                     className="ml-2 p-1 w-2/5 hover:text-blue-500 hover:font-bold cursor-pointer text-md">
                     <i className="fa-regular fa-clone"></i>
                   </button>
