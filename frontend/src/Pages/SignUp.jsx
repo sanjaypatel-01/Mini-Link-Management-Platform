@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import bgImage from "../assets/bg_image.png";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Import axios for making HTTP requests
-import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
-import "react-toastify/dist/ReactToastify.css"; // Import toast styles
+import axios from "axios"; 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function SignUp() {
+  
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({

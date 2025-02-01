@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function NewLinkModal({ isOpen, closeModal }) {
+function EditLinkModal({ isOpen, closeModal }) {
   const [destinationUrl, setDestinationUrl] = useState("");
   const [remarks, setRemarks] = useState("");
   const [expirationEnabled, setExpirationEnabled] = useState(true);
@@ -122,4 +122,4 @@ function NewLinkModal({ isOpen, closeModal }) {
   );
 }
 
-export default NewLinkModal;
+export default EditLinkModal;
