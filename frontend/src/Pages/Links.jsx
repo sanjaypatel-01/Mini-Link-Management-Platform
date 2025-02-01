@@ -206,7 +206,7 @@ function Links() {
                     href={row.shortLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className=""
+                    className="w-3/5"
                     title={row.shortLink}
                   >
                     {`${backendUrl}/${row.shortLink}`}
