@@ -21,7 +21,7 @@ function Analytics() {
         const response = await axios.get(`${backendUrl}/api/analytics`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
         });
-        
+
         console.log("API Response:", response.data); // Debugging
 
         if (response.data.success && Array.isArray(response.data.data)) {
@@ -35,12 +35,12 @@ function Analytics() {
       }
       setLoading(false);
     };
-  
+
     fetchAnalyticsData();
   }, []);
 
   // Calculate total pages
-  const totalPages = Math.ceil(data.length / rowsPerPage);
+  const totalPages = Math.ceil(data.length / rowsPerPage) || 1; // Ensure at least 1 page
 
   // Get current page data
   const startIndex = (currentPage - 1) * rowsPerPage;
@@ -93,8 +93,8 @@ function Analytics() {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center py-3 px-4">
-                  No data available
+                <td colSpan="5" className="text-center py-4 text-gray-500">
+                  Currently, there is no data to show.
                 </td>
               </tr>
             )}
@@ -102,25 +102,28 @@ function Analytics() {
         </table>
       )}
 
-      <div className="flex justify-between items-center mt-4">
-        <button
-          className={`px-4 py-2 rounded cursor-pointer ${currentPage === 1 ? "bg-gray-300" : "bg-blue-500 text-white"}`}
-          onClick={goToPreviousPage}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          className={`px-4 py-2 rounded cursor-pointer ${currentPage === totalPages ? "bg-gray-300" : "bg-blue-500 text-white"}`}
-          onClick={goToNextPage}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
+      {/* Show pagination only if there is data */}
+      {data.length > 0 && (
+        <div className="flex justify-between items-center mt-4">
+          <button
+            className={`px-4 py-2 rounded cursor-pointer ${currentPage === 1 ? "bg-gray-300" : "bg-blue-500 text-white"}`}
+            onClick={goToPreviousPage}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            className={`px-4 py-2 rounded cursor-pointer ${currentPage === totalPages ? "bg-gray-300" : "bg-blue-500 text-white"}`}
+            onClick={goToNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

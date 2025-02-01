@@ -21,7 +21,7 @@ function Dashboard() {
 
         console.log("API Response:", response.data); // Debugging
 
-        if (response.data.success && Array.isArray(response.data.data)) {
+        if (response.data.success && Array.isArray(response.data.data) && response.data.data.length > 0) {
           const analyticsData = response.data.data;
 
           let total = analyticsData.length;
@@ -77,7 +77,7 @@ function Dashboard() {
             {/* Date-wise Clicks */}
             <div className="w-[49%] p-6 border-2 border-gray-200 rounded">
               <h3 className="text-blue-700 font-semibold mb-10">Date-wise Clicks</h3>
-              {Object.keys(dateWiseClicks).length > 0 ? (
+              {totalClicks > 0 ? (
                 <div className="space-y-2">
                   {Object.entries(dateWiseClicks).map(([date, count], index) => (
                     <div key={index} className="flex items-center">
@@ -97,7 +97,7 @@ function Dashboard() {
             {/* Device-wise Clicks */}
             <div className="w-[49%] p-6 border-2 border-gray-200 rounded">
               <h3 className="text-blue-700 font-semibold mb-10">Click Devices</h3>
-              {Object.keys(deviceWiseClicks).length > 0 ? (
+              {totalClicks > 0 ? (
                 <div className="space-y-2">
                   {Object.entries(deviceWiseClicks).map(([device, count], index) => (
                     <div key={index} className="flex items-center">
