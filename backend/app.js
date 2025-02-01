@@ -46,33 +46,12 @@ const User = mongoose.model("User", UserSchema);
 
 
 
-// // Short URL Schema
-// const shortUrlSchema = new mongoose.Schema({
-//   originalLink: String,
-//   shortLink: String,
-//   remarks: String,
-//   expirationDate: Date,
-//   status: { type: String, default: "Active" },
-//   createdAt: { type: Date, default: Date.now },
-//   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, 
-// });
-
-// const ShortUrl = mongoose.model('ShortUrl', shortUrlSchema);
-
-// // Analytics schema
-// const clickAnalyticsSchema = new mongoose.Schema({
-//   shortLink: { type: mongoose.Schema.Types.ObjectId, ref: 'Url', required: true },
-//   originalLink: { type: String, required: true },
-//   ipAddress: { type: String, required: true },
-//   userDevice: { type: String, required: true },
-//   timestamp: { type: Date, default: Date.now },
-// });
-
-// const ClickAnalytics = mongoose.model('ClickAnalytics', clickAnalyticsSchema);
-
-
 
 // API Routes
+
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
 
 
 app.post("/api/signup", async (req, res) => {
