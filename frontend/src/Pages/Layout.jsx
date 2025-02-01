@@ -19,7 +19,8 @@ function Layout({ children }) {
 
   
   const [greeting, setGreeting] = useState(""); // To show date and greeting accordingly
-  const [currentDate, setCurrentDate] = useState("");
+  const [currentDate, setCurrentDate] = useState(""); 
+  const [firstName, setFirstName] = useState(""); // Store first name
   const [initials, setInitials] = useState(""); // To store the user's initials
   const [error, setError] = useState(null); // To handle errors if any
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false); // For logout
@@ -57,6 +58,11 @@ function Layout({ children }) {
 
         const userFullName = response.data.name; // Assuming 'name' is the full name
         const nameParts = userFullName.split(" ");
+
+        // Extract first name
+        setFirstName(nameParts[0]); // Store first word (first name)
+
+        // Extract initials
         const userInitials = nameParts.length === 1
             ? nameParts[0].slice(0, 2).toUpperCase() // If single name, use first two letters
             : (nameParts[0][0] + nameParts[1][0]).toUpperCase(); // If full name, use first letters of both names
@@ -196,7 +202,7 @@ function Layout({ children }) {
           <span>
             <i className="fa-solid fa-gear"></i>
           </span>
-          <span>Setting</span>
+          <span>Settings</span>
           <span className="absolute top-[-14px] left-1/2 -translate-x-1/2 w-full h-px bg-gray-200"></span>
           <span className="absolute bottom-[-14px] left-1/2 -translate-x-1/2 w-full h-px bg-gray-200"></span>
         </Link>
@@ -210,7 +216,7 @@ function Layout({ children }) {
                 <span className="mr-2">
                   <img src={IconGM} alt="" />
                 </span>
-                {greeting}, {initials ? initials : "User"}
+                {greeting}, {firstName ? firstName : "User"}
               </h3>
               <span className="text-gray-600 text-sm ml-6">{currentDate}</span>
             </div>

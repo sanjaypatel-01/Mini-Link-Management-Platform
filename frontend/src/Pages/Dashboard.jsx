@@ -26,7 +26,7 @@ function Dashboard() {
 
           let total = analyticsData.length;
           let dateClicks = {};
-          let deviceClicks = { Mobile: 0, Desktop: 0, Tablet: 0, Unknown: 0 };
+          let deviceClicks = { Mobile: 0, Desktop: 0, Tablet: 0};
 
           analyticsData.forEach((entry) => {
             // Extract date from timestamp
@@ -75,7 +75,7 @@ function Dashboard() {
 
           <div className="h-7/8 flex space-x-6 p-4">
             {/* Date-wise Clicks */}
-            <div className="w-[49%] p-6 border-2 border-gray-200 rounded">
+            <div className="w-[49%] min-h-[60vh] p-6 border-2 border-gray-200 rounded">
               <h3 className="text-blue-700 font-semibold mb-10">Date-wise Clicks</h3>
               {totalClicks > 0 ? (
                 <div className="space-y-2">
@@ -95,7 +95,7 @@ function Dashboard() {
             </div>
 
             {/* Device-wise Clicks */}
-            <div className="w-[49%] p-6 border-2 border-gray-200 rounded">
+            <div className="w-[49%] p-6 min-h-[60vh] border-2 border-gray-200 rounded">
               <h3 className="text-blue-700 font-semibold mb-10">Click Devices</h3>
               {totalClicks > 0 ? (
                 <div className="space-y-2">
