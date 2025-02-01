@@ -8,6 +8,8 @@ import NewLinkModal from "../Components/NewLinkModal";
 import cuvettelogo from "../assets/cuvettelogo.png";
 import Dashboard from "./Dashboard";
 import Routing from "./Routing";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function Layout({ children }) {
@@ -270,6 +272,7 @@ function Layout({ children }) {
       {/* Modal */}
       {/* <NewLinkModal isOpen={isModalOpen} closeModal={closeModal} /> */}
       <NewLinkModal isOpen={isModalOpen} closeModal={closeModal} refreshData={fetchLinks} />
+      <ToastContainer />  {/* ✅ Required for toast notifications */}
 
     </div>
   );

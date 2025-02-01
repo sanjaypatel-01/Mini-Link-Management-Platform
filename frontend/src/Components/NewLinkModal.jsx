@@ -52,7 +52,11 @@ function NewLinkModal({ isOpen, closeModal, refreshData }) {
 
       await refreshData();  // ✅ Refresh the links page FIRST
       closeModal();         // ✅ Close the modal
-      navigate("/links");   // ✅ Redirect to /links after closing the modal
+      if (window.location.pathname === "/links") {
+        window.location.reload(); // ✅ Force refresh if already on links page
+      } else {
+        navigate("/links");  // ✅ Redirect if on a different page
+      }
 
     } catch (error) {
       console.error("Error creating short URL:", error);
