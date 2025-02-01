@@ -212,7 +212,7 @@ function Links() {
                     {`yourdomain.com/${row.shortLink}`}
                   </a>
                   <button
-                    onClick={() => navigator.clipboard.writeText(`http://localhost:5000/${row.shortLink}`)}
+                    onClick={() => navigator.clipboard.writeText(`https://mini-link-management-platform-gk9s.onrender.com/${row.shortLink}`)}
                     className="ml-2 p-1 w-2/5 hover:text-blue-500 hover:font-bold cursor-pointer text-md">
                     <i className="fa-regular fa-clone"></i>
                   </button>
