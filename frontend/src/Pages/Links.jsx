@@ -175,9 +175,9 @@ function Links() {
           <thead>
             <tr className="bg-blue-100 text-left text-gray-800">
               <th className="py-3 px-4">Date</th>
-              <th className="py-3 px-2">Original Link</th>
-              <th className="py-3 px-2">Short Link</th>
-              <th className="py-3 px-4">Remarks</th>
+              <th className="py-3 px-4">Original Link</th>
+              <th className="py-3 px-4">Short Link</th>
+              <th className="py-3 px-2">Remarks</th>
               <th className="py-3 px-4">Clicks</th>
               <th className="py-3 px-4">Status</th>
               <th className="py-3 px-4">Action</th>
@@ -190,7 +190,7 @@ function Links() {
                 className={`text-gray-700 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
               >
                 <td className="py-3 px-4">{formatDate(row.createdAt) || "N/A"}</td>
-                <td className="py-3 px-2 truncate max-w-[150px] overflow-hidden whitespace-nowrap text-blue-500 ">
+                <td className="py-3 px-4 truncate max-w-[150px] overflow-hidden whitespace-nowrap text-blue-500 ">
                   <a
                     href={row.originalLink}
                     target="_blank"
@@ -201,23 +201,23 @@ function Links() {
                     {row.originalLink || "N/A"}
                   </a>
                 </td>
-                <td className="py-3 px-2 text-blue-500 truncate max-w-[150px] overflow-hidden whitespace-nowrap">
+                <td className="py-3 px-4 flex items-center gap-2 max-w-[200px]">
                   <a
                     href={row.shortLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-3/5"
+                    className="text-blue-500 truncate w-4/5 overflow-hidden whitespace-nowrap"
                     title={row.shortLink}
                   >
                     {`${backendUrl}/${row.shortLink}`}
                   </a>
                   <button
                     onClick={() => navigator.clipboard.writeText(`${backendUrl}/${row.shortLink}`)}
-                    className="ml-2 p-1 w-2/5 hover:text-blue-500 hover:font-bold cursor-pointer text-md">
+                    className="text-gray-500 hover:text-blue-500 hover:font-bold font-semibold cursor-pointer text-lg">
                     <i className="fa-regular fa-clone"></i>
                   </button>
                 </td>
-                <td className="py-3 px-4">{row.remarks || "N/A"}</td>
+                <td className="py-3 px-2">{row.remarks || "N/A"}</td>
                 <td className="py-3 px-4">{row.clicks.length || 0}</td>
                 {/* <td className={`py-3 px-4 font-semibold ${row.status === "Active" ? "text-green-500" : "text-red-500"}`}>
                   {row.status || "Unknown"}
