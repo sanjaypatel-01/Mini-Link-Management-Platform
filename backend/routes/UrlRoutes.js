@@ -238,20 +238,20 @@ router.get("/:shortId", async (req, res) => {
   }
 });
 
-router.put("/links/:id/deactivate", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updatedLink = await Url.findByIdAndUpdate(id, { status: "Inactive" }, { new: true });
+// router.put("/links/:id/deactivate", authenticateToken, async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const updatedLink = await Url.findByIdAndUpdate(id, { status: "Inactive" }, { new: true });
 
-    if (!updatedLink) {
-      return res.status(404).json({ message: "Link not found" });
-    }
+//     if (!updatedLink) {
+//       return res.status(404).json({ message: "Link not found" });
+//     }
 
-    res.json({ success: true, message: "Link marked as inactive", link: updatedLink });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
-  }
-});
+//     res.json({ success: true, message: "Link marked as inactive", link: updatedLink });
+//   } catch (error) {
+//     res.status(500).json({ success: false, message: "Server error", error: error.message });
+//   }
+// });
 
 
 

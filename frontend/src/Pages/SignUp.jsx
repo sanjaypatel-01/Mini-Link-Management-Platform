@@ -83,8 +83,7 @@ function SignUp() {
   
         toast.success("Registration successful! Redirecting to login page...");
 
-        if (response.data.token) {
-          localStorage.setItem("authToken", response.data.token);
+        if (response.status === 201) {
           navigate("/login");
         }
       } catch (error) {

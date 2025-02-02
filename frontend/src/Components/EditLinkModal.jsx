@@ -1,36 +1,40 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-function EditLinkModal({ isOpen, closeModal }) {
-  const [destinationUrl, setDestinationUrl] = useState("");
+function EditLinkModal({ isOpen, closeModal, link, refreshData }) {
   const [remarks, setRemarks] = useState("");
-  const [expirationEnabled, setExpirationEnabled] = useState(true);
+  const [expirationEnabled, setExpirationEnabled] = useState(false);
   const [expirationDate, setExpirationDate] = useState("");
 
-  // Set the default expiration date to the current date and time with AM/PM format
   useEffect(() => {
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().slice(0, 16); // Format as YYYY-MM-DDTHH:mm
-    setExpirationDate(formattedDate);
-  }, []);
+    if (link) {
+      setRemarks(link.remarks || "");
+      setExpirationEnabled(!!link.expirationDate);
+      setExpirationDate(link.expirationDate ? new Date(link.expirationDate).toISOString().slice(0, 16) : "");
+    }
+  }, [link]);
 
-  if (!isOpen) return null; // Don't render the modal if it's not open
+  if (!isOpen || !link) return null;
 
-  const handleCreate = () => {
-    // Handle the creation logic here
-    console.log({ destinationUrl, remarks, expirationEnabled, expirationDate });
-    closeModal();
+  const handleUpdate = async () => {
+    try {
+      const updatedData = {
+        remarks,
+        expirationDate: expirationEnabled ? expirationDate : null,
+      };
+
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/links/${link._id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+
+      refreshData();
+      closeModal();
+    } catch (error) {
+      console.error("Error updating link:", error);
+    }
   };
-
-  const handleClear = () => {
-    // Reset all form fields to their initial state
-    setDestinationUrl("");
-    setRemarks("");
-    setExpirationEnabled(true);
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().slice(0, 16); // Format as YYYY-MM-DDTHH:mm
-    setExpirationDate(formattedDate);
-  };
-  
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 backdrop-brightness-50 z-50">
@@ -44,15 +48,14 @@ function EditLinkModal({ isOpen, closeModal }) {
 
         <div className="px-6 pt-4 pb-2">
           <label className="block text-sm font-medium mb-1" htmlFor="destinationUrl">
-            Destination Url <span className="text-red-500">*</span>
+            Destination Url
           </label>
           <input
             type="url"
             id="destinationUrl"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="https://example.com"
-            value={destinationUrl}
-            onChange={(e) => setDestinationUrl(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+            value={link.originalLink}
+            disabled
           />
         </div>
 
@@ -72,25 +75,17 @@ function EditLinkModal({ isOpen, closeModal }) {
         <div className="space-y-2 flex flex-col px-6 py-4">
           <div className="flex justify-between">
             <label className="block text-sm font-medium mr-2">Link Expiration</label>
-            {/* <input
-              type="checkbox"
-              checked={expirationEnabled}
-              onChange={(e) => setExpirationEnabled(e.target.checked)}
-              className="mr-2"
-            /> */}
-            {/* Toggle Switch */}
             <div
-                  className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ${
-                    expirationEnabled ? "bg-blue-500" : "bg-gray-300"
-                  }`}
-                  onClick={() => setExpirationEnabled(!expirationEnabled)}
-                >
-                  {/* Toggle Handle */}
-                  <div
-                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${
-                      expirationEnabled ? "translate-x-5" : "translate-x-0"
-                    }`}
-                  ></div>
+              className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ${
+                expirationEnabled ? "bg-blue-500" : "bg-gray-300"
+              }`}
+              onClick={() => setExpirationEnabled(!expirationEnabled)}
+            >
+              <div
+                className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${
+                  expirationEnabled ? "translate-x-5" : "translate-x-0"
+                }`}
+              ></div>
             </div>
           </div>
           {expirationEnabled && (
@@ -106,15 +101,15 @@ function EditLinkModal({ isOpen, closeModal }) {
         <div className="flex justify-between p-4 bg-gray-100 absolute bottom-0 left-0 right-0">
           <button
             className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-300 cursor-pointer"
-            onClick={handleClear} // This will clear the form fields
+            onClick={closeModal}
           >
-            Clear
+            Cancel
           </button>
           <button
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-600 cursor-pointer"
-            onClick={handleCreate}
+            onClick={handleUpdate}
           >
-            Save
+            Update
           </button>
         </div>
       </div>
