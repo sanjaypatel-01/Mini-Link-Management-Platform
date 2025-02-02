@@ -98,12 +98,12 @@ router.get("/links", authenticateToken, async (req, res) => {
 router.put("/links/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const { originalLink, remarks } = req.body;
+    const { originalLink, remarks, expirationDate } = req.body;
 
     // ✅ Find the link and update it
     const updatedLink = await Url.findByIdAndUpdate(
       id,
-      { originalLink, remarks },
+      { originalLink, remarks, expirationDate },
       { new: true }
     );
 
