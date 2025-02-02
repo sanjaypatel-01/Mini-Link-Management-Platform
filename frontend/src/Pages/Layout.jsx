@@ -5,7 +5,7 @@ import logo from "../assets/logo.png";
 import IconGM from "../assets/IconGM.png";
 import IconSearch from "../assets/IconSearch.png";
 import NewLinkModal from "../Components/NewLinkModal";
-import cuvettelogo from "../assets/cuvettelogo.png";
+import cuvettelogo from "../assets/cuvettelogo.svg";
 import Dashboard from "./Dashboard";
 import Routing from "./Routing";
 import { ToastContainer } from "react-toastify";
@@ -138,8 +138,8 @@ function Layout({ children }) {
   }, [searchTerm, location.pathname, navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken"); // 🔥 Clear auth token
-    navigate("/login"); // 🔥 Redirect to login page
+    localStorage.removeItem("authToken"); // Clear auth token
+    navigate("/login"); // Redirect to login page
   };
   
 
@@ -148,7 +148,7 @@ function Layout({ children }) {
       {/* Sidebar */}
       <div className="w-1/5 flex items-start flex-col p-6 border-r border-gray-200">
         <div>
-          <img className="w-12" src={logo} alt="" />
+          <img className="w-[145px] ml-4 mt-2" src={cuvettelogo} alt="" />
         </div>
 
         <Link
@@ -262,7 +262,7 @@ function Layout({ children }) {
           </div>
         </div>
 
-        <div className="h-9/10 p-10 flex flex-col">
+        <div className="h-9/10 p-10 flex flex-col bg-gray-50">
           <Outlet context={{ searchTerm }} />
         </div>
 

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"; 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; 
+import cuvettelogo from "../assets/cuvettelogo.svg";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function SignUp() {
@@ -135,8 +136,13 @@ function SignUp() {
   return (
     <div className="w-full h-screen flex">
       <ToastContainer /> {/* Toast container for displaying toasts */}
-      <div className="w-1/2">
+      <div className="w-1/2 relative">
         <img className="w-full h-full object-cover" src={bgImage} alt="" />
+        <img
+           src={cuvettelogo}
+           alt="Logo"
+           className="absolute top-8 left-8 w-[145px] " 
+        />
       </div>
       <div className="w-1/2 flex flex-col">
         <div className="h-[10%] flex justify-end items-center p-12">

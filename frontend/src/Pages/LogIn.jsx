@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import bgImage from "../assets/bg_image.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Don't forget to import axios
+import cuvettelogo from "../assets/cuvettelogo.svg";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -45,8 +46,13 @@ function LogIn() {
 
   return (
     <div className="w-full h-screen flex">
-      <div className="w-1/2">
+      <div className="w-1/2 relative">
         <img className="w-full h-full object-cover" src={bgImage} alt="" />
+        <img
+          src={cuvettelogo}
+          alt="Logo"
+          className="absolute top-8 left-8 w-[145px] " 
+        />
       </div>
       <div className="w-1/2 flex flex-col">
         <div className="h-[10%] flex justify-end items-center p-12">
