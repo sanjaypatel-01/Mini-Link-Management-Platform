@@ -32,6 +32,16 @@ function NewLinkModal({ isOpen, closeModal, refreshData }) {
         return;
       }
 
+      let finalExpirationDate = expirationDate;  
+      if (!expirationEnabled) {  // If expiration is disabled, set default to 1 days later
+        const defaultExpirationDate = new Date();
+        defaultExpirationDate.setDate(defaultExpirationDate.getDate() + 1);
+        finalExpirationDate = defaultExpirationDate.toISOString().slice(0, 16);
+
+        // Update state to reflect the change in UI
+        setExpirationDate(finalExpirationDate);
+      }
+
       const response = await fetch(`${backendUrl}/api/create`, {
         method: "POST",
         headers: {
@@ -41,7 +51,9 @@ function NewLinkModal({ isOpen, closeModal, refreshData }) {
         body: JSON.stringify({
           destinationUrl,
           remarks,
-          expirationDate: expirationEnabled ? expirationDate : null,
+          // expirationDate: expirationEnabled ? expirationDate : null,
+          expirationDate: finalExpirationDate,
+
         }),
       });
 

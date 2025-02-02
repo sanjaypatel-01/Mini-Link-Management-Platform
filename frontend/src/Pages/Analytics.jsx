@@ -69,10 +69,10 @@ function Analytics() {
                 <td className="py-3 px-4 max-w-[150px]">
                   {row.timestamp ? new Date(row.timestamp).toLocaleString() : "No Timestamp"}
                 </td>
-                <td className="py-3 px-4 text-blue-500 truncate max-w-[160px] overflow-hidden whitespace-nowrap">
+                <td className="py-3 px-4 truncate max-w-[160px] overflow-hidden whitespace-nowrap">
                   {row.originalLink}
                 </td>
-                <td className="py-3 px-10 text-blue-500 truncate max-w-[160px] overflow-hidden whitespace-nowrap">
+                <td className="py-3 px-10 truncate max-w-[160px] overflow-hidden whitespace-nowrap">
                   <a href={row.shortLink.startsWith("http") ? row.shortLink : `${backendUrl}/${row.shortLink}`} target="_blank" rel="noopener noreferrer">
                     {row.shortLink.startsWith("http") ? row.shortLink : `${backendUrl}/${row.shortLink}`}
                   </a>

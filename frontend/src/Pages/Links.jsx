@@ -15,6 +15,7 @@ function Links() {
   const [error, setError] = useState(null);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [linkToRemove, setLinkToRemove] = useState(null);
+  const [showToast, setShowToast] = useState(false);
   
   const [filteredLinks, setFilteredLinks] = useState([]); //  Declare filteredLinks
   const { searchTerm } = useOutletContext(); // Get searchTerm from Layout.js
@@ -191,7 +192,7 @@ function Links() {
                 className={`text-gray-700 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
               >
                 <td className="py-3 px-4">{formatDate(row.createdAt) || "N/A"}</td>
-                <td className="py-3 px-4 truncate max-w-[150px] overflow-hidden whitespace-nowrap text-blue-500 ">
+                <td className="py-3 px-4 truncate max-w-[150px] overflow-hidden whitespace-nowrap">
                   <a
                     href={row.originalLink}
                     target="_blank"
@@ -207,13 +208,17 @@ function Links() {
                     href={row.shortLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 truncate w-4/5 overflow-hidden whitespace-nowrap"
+                    className="truncate w-4/5 overflow-hidden whitespace-nowrap"
                     title={row.shortLink}
                   >
                     {`${backendUrl}/${row.shortLink}`}
                   </a>
                   <button
-                    onClick={() => navigator.clipboard.writeText(`${backendUrl}/api/${row.shortLink}`)}
+                    onClick={() => {
+                      navigator.clipboard.writeText(`${backendUrl}/api/${row.shortLink}`);
+                      setShowToast(true);
+                      setTimeout(() => setShowToast(false), 2000);
+                    }}
                     className="text-gray-500 hover:text-blue-500 hover:font-bold font-semibold cursor-pointer text-lg">
                     <i className="fa-regular fa-clone"></i>
                   </button>
@@ -319,6 +324,12 @@ function Links() {
 
       <NewLinkModal isOpen={isModalOpen} closeModal={closeModal} link={selectedLink} refreshData={fetchLinks} />
 
+      {showToast && (
+          <div className="fixed bottom-12 left-12 bg-white border border-blue-500 shadow-md rounded-lg px-10 py-2 flex items-center space-x-2">
+            <i className="fa-solid fa-check-circle text-blue-500 text-lg"></i>
+            <span className="text-gray-800 font-semibold">Link Copied</span>
+          </div>
+      )}
 
     </>
   );

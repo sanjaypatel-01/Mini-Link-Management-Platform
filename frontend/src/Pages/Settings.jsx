@@ -108,9 +108,9 @@ function Settings() {
       <div className="h-full w-1/3 flex flex-col gap-4 items-start">
         {/* Name */}
         <div className="flex w-full items-center justify-between mt-16">
-          <span>Name</span>
+          <span className="font-semibold">Name</span>
           <input
-            className="border border-gray-400 p-1 px-2 rounded w-4/6"
+            className="border border-gray-300 p-1 px-2 text-gray-700 rounded w-4/6"
             type="text"
             name="name"
             placeholder="Sanjay Patel"
@@ -121,9 +121,9 @@ function Settings() {
 
         {/* Email */}
         <div className="flex w-full items-center justify-between">
-          <span>Email Id</span>
+          <span className="font-semibold">Email Id</span>
           <input
-            className="border border-gray-400 p-1 px-2 rounded w-4/6"
+            className="border border-gray-300 p-1 px-2 text-gray-700 rounded w-4/6"
             type="text"
             name="email"
             placeholder="sanjay@gmail.com"
@@ -134,9 +134,9 @@ function Settings() {
 
         {/* Mobile */}
         <div className="flex w-full items-center justify-between">
-          <span>Mobile no.</span>
+          <span className="font-semibold">Mobile no.</span>
           <input
-            className="border border-gray-400 p-1 px-2 rounded w-4/6"
+            className="border border-gray-300 p-1 text-gray-700 px-2 rounded w-4/6"
             type="text"
             name="mobile"
             placeholder="9630974774"

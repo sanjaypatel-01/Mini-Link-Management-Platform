@@ -230,7 +230,7 @@ function Layout({ children }) {
             >
               <span className="text-xl">+</span> Create new
             </button>
-            <div className="flex border border-gray-400 rounded p-2 ml-10 mr-16 items-center space-x-2 justify-center">
+            <div className="flex border border-gray-300 rounded p-2 ml-10 mr-16 items-center space-x-2 justify-center">
               <span>
                 <img src={IconSearch} alt="" />
               </span>
@@ -246,7 +246,7 @@ function Layout({ children }) {
             {/* Profile Icon with Dropdown */}
             <div className="relative" ref={dropdownRef}>
               {/* Profile Icon */}
-              <div className="w-10 h-10 rounded-full bg-yellow-400 font-semibold text-lg text-gray-700 flex items-center justify-center p-1 ml-8 cursor-pointer"
+              <div className="w-10 h-10 rounded-full bg-yellow-300 font-semibold text-lg text-amber-700 flex items-center justify-center p-1 ml-8 cursor-pointer hover:scale-107 transform transition-transform duration-200 "
                onClick={() => setIsDropdownOpen((prev) => !prev)} >
                 {initials ? initials : "NA"}
               </div>

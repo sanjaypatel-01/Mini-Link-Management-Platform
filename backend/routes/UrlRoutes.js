@@ -65,6 +65,14 @@ router.get("/links", authenticateToken, async (req, res) => {
       userId = new mongoose.Types.ObjectId(userId);
     }
 
+    const now = new Date();
+
+    // Update expired links to "Inactive" before fetching
+    await Url.updateMany(
+      { user: userId, expirationDate: { $lt: now }, status: "Active" },
+      { $set: { status: "Inactive" } }
+    );
+
     const links = await Url.find({ user: userId })
       .sort({ createdAt: -1 }) // Newest first
       .skip((parsedPage - 1) * parsedLimit)
@@ -110,23 +118,51 @@ router.put("/links/:id", authenticateToken, async (req, res) => {
   }
 });
 
+
 //Delete - links
+
+// router.delete("/links/:id", authenticateToken, async (req, res) => {
+//   const { id } = req.params; // Get _id from request params
+
+//   try {
+//     const linkData = await Url.findByIdAndDelete(id); // Delete by _id
+
+//     if (linkData) {
+//       res.json({ message: "Link deleted successfully." });
+//     } else {
+//       res.status(404).json({ error: "Link not found." });
+//     }
+//   } catch (error) {
+//     console.error("Error deleting link:", error);
+//     res.status(500).json({ error: "Error deleting the link" });
+//   }
+// });
+
 router.delete("/links/:id", authenticateToken, async (req, res) => {
   const { id } = req.params; // Get _id from request params
 
   try {
-    const linkData = await Url.findByIdAndDelete(id); // Delete by _id
+    const linkData = await Url.findById(id); // Find by _id
 
-    if (linkData) {
-      res.json({ message: "Link deleted successfully." });
-    } else {
-      res.status(404).json({ error: "Link not found." });
+    if (!linkData) {
+      return res.status(404).json({ error: "Link not found." });
     }
+
+    // Prevent deletion if the link is inactive
+    if (linkData.status === "Inactive") {
+      return res.status(400).json({ error: "Cannot delete inactive links." });
+    }
+
+    await Url.findByIdAndDelete(id); // Delete only if active
+
+    res.json({ message: "Link deleted successfully." });
   } catch (error) {
     console.error("Error deleting link:", error);
     res.status(500).json({ error: "Error deleting the link" });
   }
 });
+
+
 
 router.get("/:shortId", async (req, res) => {
   const { shortId } = req.params;
@@ -139,15 +175,26 @@ router.get("/:shortId", async (req, res) => {
   try {
     console.log(`🔍 Searching for short link: ${shortId}`);
 
-    // ✅ Find the URL in the database
+    // Find the URL in the database
     const linkData = await Url.findOne({ shortLink: shortId });
 
     if (!linkData) {
-      console.log("❌ URL not found in database");
+      console.log("URL not found in database");
       return res.status(404).json({ message: "URL not found" });
     }
 
-    console.log(`✅ URL found: Redirecting to ${linkData.originalLink}`);
+    // Check if link has expired
+    const now = new Date();
+    if (linkData.expirationDate && new Date(linkData.expirationDate) < now) {
+      console.log("Link has expired!");
+
+      linkData.status = "Inactive"; // Update status instead of deleting
+      await linkData.save(); 
+
+      return res.status(410).json({ message: "This link has expired." }); // Return 410 Gone
+    }
+
+    console.log(`URL found: Redirecting to ${linkData.originalLink}`);
 
     // Ensure `originalLink` has a valid scheme (http/https)
     if (!/^https?:\/\//.test(linkData.originalLink)) {
@@ -190,6 +237,22 @@ router.get("/:shortId", async (req, res) => {
     res.status(500).json({ message: "Failed to redirect", error: error.message });
   }
 });
+
+router.put("/links/:id/deactivate", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedLink = await Url.findByIdAndUpdate(id, { status: "Inactive" }, { new: true });
+
+    if (!updatedLink) {
+      return res.status(404).json({ message: "Link not found" });
+    }
+
+    res.json({ success: true, message: "Link marked as inactive", link: updatedLink });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+});
+
 
 
 export default router;
