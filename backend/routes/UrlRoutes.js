@@ -173,7 +173,7 @@ router.get("/:shortId", async (req, res) => {
     : req.connection?.remoteAddress || req.socket?.remoteAddress || req.ip;
 
   try {
-    console.log(`🔍 Searching for short link: ${shortId}`);
+    console.log(`Searching for short link: ${shortId}`);
 
     // Find the URL in the database
     const linkData = await Url.findOne({ shortLink: shortId });
@@ -208,14 +208,14 @@ router.get("/:shortId", async (req, res) => {
       ? "Tablet"
       : "Desktop";
 
-    console.log(`📍 Click detected from IP: ${ip}, Device: ${device}`);
+    console.log(`Click detected from IP: ${ip}, Device: ${device}`);
 
     // Ensure `clicks` array exists before pushing
     if (!Array.isArray(linkData.clicks)) {
       linkData.clicks = [];
     }
 
-    // ✅ Create click tracking entry
+    // Create click tracking entry
     const clickEntry = {
       timestamp: new Date(),
       device: device || "Unknown",
@@ -227,31 +227,16 @@ router.get("/:shortId", async (req, res) => {
     // Push the click entry
     linkData.clicks.push(clickEntry);
 
-    // ✅ Save updated document
+    // Save updated document
     await linkData.save();
 
-    console.log("✅ Redirecting user...");
+    console.log("Redirecting user...");
     return res.redirect(linkData.originalLink);
   } catch (error) {
-    console.error("❌ Redirect error:", error);
+    console.error("Redirect error:", error);
     res.status(500).json({ message: "Failed to redirect", error: error.message });
   }
 });
-
-// router.put("/links/:id/deactivate", authenticateToken, async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const updatedLink = await Url.findByIdAndUpdate(id, { status: "Inactive" }, { new: true });
-
-//     if (!updatedLink) {
-//       return res.status(404).json({ message: "Link not found" });
-//     }
-
-//     res.json({ success: true, message: "Link marked as inactive", link: updatedLink });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: "Server error", error: error.message });
-//   }
-// });
 
 
 

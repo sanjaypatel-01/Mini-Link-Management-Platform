@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import sort from "../assets/sort.svg";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -55,7 +56,9 @@ function Analytics() {
       <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
         <thead>
           <tr className="bg-blue-100 text-left text-gray-800">
-            <th className="py-3 px-4">Timestamp</th>
+            <th className="py-3 px-4 flex gap-2">Timestamp
+              <span className="flex items-center justify-center"><img src={sort} alt="" /></span>
+            </th>
             <th className="py-3 px-4">Original Link</th>
             <th className="py-3 px-10">Short Link</th>
             <th className="py-3 px-6">IP Address</th>

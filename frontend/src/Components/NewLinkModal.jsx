@@ -51,8 +51,8 @@ function NewLinkModal({ isOpen, closeModal, refreshData }) {
         body: JSON.stringify({
           destinationUrl,
           remarks,
-          // expirationDate: expirationEnabled ? expirationDate : null,
-          expirationDate: finalExpirationDate,
+          expirationDate: expirationEnabled ? expirationDate : null,
+          // expirationDate: finalExpirationDate,
 
         }),
       });

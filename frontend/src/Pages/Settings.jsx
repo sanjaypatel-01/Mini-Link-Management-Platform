@@ -94,7 +94,7 @@ function Settings() {
 
           setTimeout(() => {
             localStorage.removeItem("authToken");
-            window.location.href = "/login";
+            window.location.href = "/signup";
           }, 2000);
         }
       } catch (error) {

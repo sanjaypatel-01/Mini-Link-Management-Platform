@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import EditLinkModal from "../Components/EditLinkModal";
 import NewLinkModal from "../Components/NewLinkModal";
+import sort from "../assets/sort.svg";
 import { useOutletContext } from "react-router-dom"; //Import this to get searchTerm from Layout.js
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -25,6 +26,7 @@ function Links() {
   const [selectedLink, setSelectedLink] = useState(null); // Store selected link data
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Track Edit Modal state
 
+  
   // Function to open Edit Modal with link details
   const openEditModal = (link) => {
     setSelectedLink(link); // Store link details before opening modal
@@ -175,12 +177,16 @@ function Links() {
         <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-blue-100 text-left text-gray-800">
-              <th className="py-3 px-4">Date</th>
+              <th className="py-3 px-4 flex gap-2">Date
+                <span className="flex items-center justify-center"><img src={sort} alt="" /></span>
+              </th>
               <th className="py-3 px-4">Original Link</th>
               <th className="py-3 px-4">Short Link</th>
               <th className="py-3 px-2">Remarks</th>
               <th className="py-3 px-4">Clicks</th>
-              <th className="py-3 px-4">Status</th>
+              <th className="py-3 px-4 flex gap-2">Status
+                <span className="flex items-center justify-center"><img src={sort} alt="" /></span>
+              </th>
               <th className="py-3 px-4">Action</th>
             </tr>
           </thead>
