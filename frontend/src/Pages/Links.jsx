@@ -263,7 +263,8 @@ function Links() {
           )}
           </tbody>
         </table>
-
+        
+        {filteredLinks.length > 0 && (
         <div className="flex justify-center gap-12 items-center mt-auto py-4">
           <button
             className={`px-4 py-2 rounded cursor-pointer ${
@@ -289,6 +290,7 @@ function Links() {
             Next
           </button>
         </div>
+      )}
       </div>
 
       {/* Confirmation Modal */}
