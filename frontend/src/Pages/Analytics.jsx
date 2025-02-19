@@ -53,7 +53,8 @@ function Analytics() {
 
   return (
     <div className="p-4 h-full flex flex-col rounded min-h-full">
-      <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="w-full overflow-x-auto">
+      <table className="w-full min-w-[850px] table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
         <thead>
           <tr className="bg-blue-100 text-left text-gray-800">
             <th className="py-3 px-4 flex gap-2">Timestamp
@@ -93,6 +94,7 @@ function Analytics() {
           )}
         </tbody>
       </table>
+      </div>
 
       {/* Show pagination only if there is data */}
       {data.length > 0 && (

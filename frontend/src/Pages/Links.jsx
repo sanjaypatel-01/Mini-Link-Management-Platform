@@ -51,16 +51,27 @@ function Links() {
   
       if (data && Array.isArray(data.data)) {
 
-        // ✅ Check expiration and update status
-        const updatedLinks = data.data.map(link => {
-        const expirationDate = new Date(link.expirationDate);
-        const now = new Date();
+        // Previous, 
+        // const updatedLinks = data.data.map(link => {
+        // const expirationDate = new Date(link.expirationDate);
+        // const now = new Date();
 
-        if (expirationDate && expirationDate < now) {
-          return { ...link, status: "Inactive" }; // Mark as inactive
-        }
-        return link;
+        // if (expirationDate && expirationDate < now) {
+        //   return { ...link, status: "Inactive" }; // Mark as inactive
+        // }
+        // return link;
+        // });
+
+        const updatedLinks = data.data.map(link => {
+          const expirationDate = link.expirationDate ? new Date(link.expirationDate) : null;
+          const now = new Date();
+          
+          return {
+            ...link,
+            status: expirationDate && expirationDate < now ? "Inactive" : "Active", // Ensure correct status
+          };
         });
+        
 
         // setLinksData(data.data);
         setLinksData(updatedLinks);
@@ -174,7 +185,8 @@ function Links() {
   return (
     <>
       <div className="p-4 h-full rounded flex flex-col min-h-full">
-        <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+        <div className="w-full overflow-x-auto">
+        <table className="w-full min-w-[850px] table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-blue-100 text-left text-gray-800">
               <th className="py-3 px-4 flex gap-2">Date
@@ -234,13 +246,20 @@ function Links() {
                 {/* <td className={`py-3 px-4 font-semibold ${row.status === "Active" ? "text-green-500" : "text-red-500"}`}>
                   {row.status || "Unknown"}
                 </td> */}
-                <td
+                
+                {/* Previous */}
+                {/* <td
                   className={`py-3 px-4 font-semibold ${
                       new Date(row.expirationDate) < new Date() ? "text-yellow-600" : "text-green-500"
                     }`}
                   >
                     {new Date(row.expirationDate) < new Date() ? "Inactive" : row.status || "Unknown"}
+                  </td> */}
+
+                  <td className={`py-3 px-4 font-semibold ${row.status === "Inactive" ? "text-yellow-600" : "text-green-500"}`}>
+                    {row.status || "Unknown"}
                   </td>
+
 
                 <td className="py-3 px-4 flex gap-6">
                   {/* <button
@@ -269,6 +288,7 @@ function Links() {
           )}
           </tbody>
         </table>
+        </div>
         
         {filteredLinks.length > 0 && (
         <div className="flex justify-center gap-12 items-center mt-auto py-4">
@@ -302,7 +322,7 @@ function Links() {
       {/* Confirmation Modal */}
       {isRemoveModalOpen && (
         <div className="fixed inset-0 flex rounded-lg items-center justify-center backdrop-brightness-50 bg-opacity-50 z-50 ">
-          <div className="bg-white rounded shadow-lg">
+          <div className="bg-white rounded shadow-lg scale-70 md:scale-100">
             <span className="text-lg cursor-pointer flex justify-end p-6" onClick={closeRemoveModal}>
               <i className="fa-solid fa-xmark"></i>
             </span>

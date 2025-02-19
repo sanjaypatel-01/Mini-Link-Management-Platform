@@ -104,8 +104,8 @@ function Settings() {
   
 
   return (
-    <div className="h-9/10 p-12 flex justify-center rounded">
-      <div className="h-full w-1/3 flex flex-col gap-4 items-start">
+    <div className="h-9/10 md:p-12 p-8 flex justify-center rounded">
+      <div className="h-full w-full md:w-2/3 lg:w-1/3 flex flex-col gap-4 items-start">
         {/* Name */}
         <div className="flex w-full items-center justify-between mt-16">
           <span className="font-semibold">Name</span>
@@ -167,7 +167,7 @@ function Settings() {
       {/* Confirmation Modal */}
       {isRemoveModalOpen && (
             <div className="fixed inset-0 flex rounded-lg items-center justify-center backdrop-brightness-50 bg-opacity-50 z-50 ">
-              <div className="bg-white rounded shadow-lg">
+              <div className="bg-white rounded shadow-lg scale-70 md:scale-100">
                 <span className="text-lg cursor-pointer flex justify-end p-6" onClick={closeRemoveModal}>
                   <i className="fa-solid fa-xmark"></i>
                 </span>

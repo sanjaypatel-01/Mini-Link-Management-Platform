@@ -38,7 +38,7 @@ function EditLinkModal({ isOpen, closeModal, link, refreshData }) {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 backdrop-brightness-50 z-50">
-      <div className="bg-white rounded-md w-2/7 h-[70%] relative overflow-hidden shadow-lg">
+      <div className="bg-white rounded-md w-6/7 scale-90 md:w-4/7 md:scale-100 lg:w-2/7 h-[70%] relative overflow-hidden shadow-lg">
         <div className="text-lg font-semibold bg-slate-700 text-white p-4 flex justify-between">
           <h2>Edit Link</h2>
           <span className="text-2xl cursor-pointer" onClick={closeModal}>

@@ -6,6 +6,7 @@ import IconGM from "../assets/IconGM.png";
 import IconSearch from "../assets/IconSearch.png";
 import NewLinkModal from "../Components/NewLinkModal";
 import cuvettelogo from "../assets/cuvettelogo.svg";
+import menu from "../assets/menu.svg";
 import Dashboard from "./Dashboard";
 import Routing from "./Routing";
 import { ToastContainer } from "react-toastify";
@@ -18,7 +19,7 @@ function Layout({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState(""); // Search state
-
+  
   
   const [greeting, setGreeting] = useState(""); // To show date and greeting accordingly
   const [currentDate, setCurrentDate] = useState(""); 
@@ -27,7 +28,8 @@ function Layout({ children }) {
   const [error, setError] = useState(null); // To handle errors if any
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false); // For logout
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // For the profile dropdown
-
+  const [isOpen, setIsOpen] = useState(false);
+  
   useEffect(() => {
     // Get the current time
     const now = new Date();
@@ -145,10 +147,21 @@ function Layout({ children }) {
 
   return (
     <div className="w-full h-screen flex">
+
       {/* Sidebar */}
-      <div className="w-1/5 flex items-start flex-col p-6 border-r border-gray-200">
+      <div className={`fixed inset-y-0 left-0 w-1/5 bg-white border-r border-gray-200 transform ${
+          isOpen ? "translate-x-0 p-1 w-3/6 md:w-2/6" : "-translate-x-full overflow-hidden p-6"
+        } lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out`}>
+        {/* <div className="w-1/5 flex items-start flex-col p-6 border-r border-gray-200"></div> */}
         <div>
-          <img className="w-[145px] ml-4 mt-2" src={cuvettelogo} alt="" />
+          <img className="w-[145px] ml-4 mt-2 hidden lg:flex" src={cuvettelogo} alt="" />
+          {/* Hamburger Button */}
+          <button
+                className="lg:hidden p-2 w-[50px]"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                {isOpen ? <img src={menu} className="text-blue-700" alt="" /> : <img src={menu} alt="" />}
+            </button>
         </div>
 
         <Link
@@ -210,9 +223,17 @@ function Layout({ children }) {
         </Link>
       </div>
 
-      <div className="w-4/5 flex flex-col">
-        <div className="h-1/10 flex items-center justify-between p-8 border-b border-gray-200">
-          <div>
+      <div className="w-full lg:w-4/5 flex flex-col">
+        {/* Navbar */}
+        <div className="h-auto flex flex-wrap items-center justify-between lg:p-8 p-4 border-b border-gray-200">
+          <div className="flex">
+            {/* Hamburger Button */}
+            <button
+                className="lg:hidden p-2 w-[50px]"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                {isOpen ? <img src={menu} className="text-blue-700" alt="" /> : <img src={menu} alt="" />}
+            </button>
             <div>
               <h3 className="font-semibold flex items-center">
                 <span className="mr-2">
@@ -223,28 +244,9 @@ function Layout({ children }) {
               <span className="text-gray-600 text-sm ml-6">{currentDate}</span>
             </div>
           </div>
-          <div className="flex">
-            <button
-              className="bg-blue-700 text-white flex items-center justify-center gap-1 rounded px-4 py-1 h-10 ml-16 cursor-pointer"
-              onClick={openModal}
-            >
-              <span className="text-xl">+</span> Create new
-            </button>
-            <div className="flex border border-gray-300 rounded p-2 ml-10 mr-16 items-center space-x-2 justify-center">
-              <span>
-                <img src={IconSearch} alt="" />
-              </span>
-              <input
-                className="outline-none"
-                type="text"
-                placeholder="Search by remarks"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
 
-              />
-            </div>
-            {/* Profile Icon with Dropdown */}
-            <div className="relative" ref={dropdownRef}>
+          {/* Profile Icon with Dropdown */}
+            <div className="relative ml-auto lg:hidden" ref={dropdownRef}>
               {/* Profile Icon */}
               <div className="w-10 h-10 rounded-full bg-yellow-300 font-semibold text-lg text-amber-700 flex items-center justify-center p-1 ml-8 cursor-pointer hover:scale-107 transform transition-transform duration-200 "
                onClick={() => setIsDropdownOpen((prev) => !prev)} >
@@ -259,10 +261,48 @@ function Layout({ children }) {
                 </div>
               )}
             </div>  
+
+          {/* Right section */}
+          <div className="flex flex-wrap lg:flex-nowrap w-full lg:w-auto items-center lg:justify-end mt-4 lg:mt-0 space-y-3 lg:space-y-0">
+            <button
+              className="bg-blue-700 text-white flex items-center justify-center gap-1 rounded px-4 py-1 h-10 cursor-pointer w-full lg:w-auto"
+              onClick={openModal}
+            >
+              <span className="text-xl">+</span> Create new
+            </button>
+            <div className="flex border border-gray-300 rounded p-2 lg:ml-10 lg:mr-16 items-center space-x-2 justify-center w-full lg:w-auto">
+              <span>
+                <img src={IconSearch} alt="" />
+              </span>
+              <input
+                className="outline-none"
+                type="text"
+                placeholder="Search by remarks"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+
+              />
+            </div>
+            {/* Profile Icon with Dropdown */}
+            <div className="relative ml-auto hidden lg:flex" ref={dropdownRef}>
+              {/* Profile Icon */}
+              <div className="w-10 h-10 rounded-full bg-yellow-300 font-semibold text-lg text-amber-700 flex items-center justify-center p-1 ml-8 cursor-pointer hover:scale-107 transform transition-transform duration-200 "
+               onClick={() => setIsDropdownOpen((prev) => !prev)} >
+                {initials ? initials : "NA"}
+              </div>
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-12 w-32 bg-white border border-gray-200 rounded shadow-sm">
+                  <button onClick={handleLogout} className="w-full overflow-hidden text-center px-4 py-2 text-gray-500 hover:bg-gray-50 cursor-pointer">
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>  
           </div>
         </div>
 
-        <div className="h-9/10 p-10 flex flex-col bg-gray-50">
+        <div className="h-9/10 lg:p-10 p-1 flex flex-col bg-gra-50">
           <Outlet context={{ searchTerm }} />
         </div>
 

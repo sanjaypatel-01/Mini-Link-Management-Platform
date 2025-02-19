@@ -46,7 +46,7 @@ function LogIn() {
 
   return (
     <div className="w-full h-screen flex">
-      <div className="w-1/2 relative">
+      <div className="w-1/2 relative hidden lg:flex">
         <img className="w-full h-full object-cover" src={bgImage} alt="" />
         <img
           src={cuvettelogo}
@@ -54,7 +54,12 @@ function LogIn() {
           className="absolute top-8 left-8 w-[145px] " 
         />
       </div>
-      <div className="w-1/2 flex flex-col">
+      <div className="flex flex-col w-full lg:w-1/2 relative">
+        <img
+                 src={cuvettelogo}
+                 alt="Logo"
+                 className="absolute top-8 left-8 w-[100px] lg:hidden" 
+               />
         <div className="h-[10%] flex justify-end items-center p-12">
           <button
             className={`cursor-pointer px-2 py-1 rounded ml-6 ${
