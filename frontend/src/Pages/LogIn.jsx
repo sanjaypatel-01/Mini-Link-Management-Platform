@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import bgImage from "../assets/bg_image.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Don't forget to import axios
-import cuvettelogo from "../assets/cuvettelogo.svg";
+import cuvettelogo from "../assets/cuvettelogo.png";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 

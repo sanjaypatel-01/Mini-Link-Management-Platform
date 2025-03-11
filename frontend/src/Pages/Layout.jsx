@@ -5,7 +5,7 @@ import logo from "../assets/logo.png";
 import IconGM from "../assets/IconGM.png";
 import IconSearch from "../assets/IconSearch.png";
 import NewLinkModal from "../Components/NewLinkModal";
-import cuvettelogo from "../assets/cuvettelogo.svg";
+import cuvettelogo from "../assets/cuvettelogo.png";
 import menu from "../assets/menu.svg";
 import Dashboard from "./Dashboard";
 import Routing from "./Routing";
