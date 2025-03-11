@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import logo from "../assets/logo.png";
 import IconGM from "../assets/IconGM.png";
 import IconSearch from "../assets/IconSearch.png";
 import NewLinkModal from "../Components/NewLinkModal";
